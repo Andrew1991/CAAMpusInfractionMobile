@@ -58,23 +58,25 @@ angular.module('app.services', ['ionic.utils'])
   }
   
       var infractions = [
-           "Sin permiso de estacionamiento",
-            "Permiso vencido",
-            "Permiso no pegado al cristal",
-           "Estacionado en area que no le corresponde",
-           "Estacionado ocupando dos espacios",
-           "Estacionado bloqueando otro vehiculo",
-           "Estacionado en sitio no designado como area de estacionamiento",
-           "Estacionado frente encintado amarillo",
-           "Sobre la grama o en la acera",
-           "Estacionado en area de carga y descarga",
-           "No obedecer la senal del guardia",
-           "No obedecer la rotulacion de transito",
-           "Negligencia temeraria o imprudencia al conducir vehiculo de motor",
-           "Silenciador ruidoso, aceleracion motor",
-           "Estacionado area critica",
-           "Estacionado area impedidos",
-           "Estacionado rampa impedidos"
+           {id:0, description: "Sin permiso de estacionamiento"},
+             {id:1, description:"Permiso vencido"},
+             {id:2, description:"Permiso no pegado al cristal"},
+           {id:3, description: "Estacionado en area que no le corresponde"},
+           {id:4, description:"Estacionado ocupando dos espacios"},
+           {id:5, description: "Estacionado bloqueando otro vehiculo"},
+           {id:6, description: "Estacionado en sitio no designado como area de estacionamiento"},
+            {id:7, description:"Estacionado frente encintado amarillo"},
+           {id:8, description: "Sobre la grama o en la acera"},
+            {id:9, description:"Estacionado en area de carga y descarga"},
+            {id:10, description:"No obedecer la senal del guardia"},
+           {id:11, description: "No obedecer la rotulacion de transito"},
+           {id:12, description: "Negligencia temeraria o imprudencia al conducir vehiculo de motor"},
+            {id:13, description:"Silenciador ruidoso, aceleracion motor"},
+           {id:14, description: "Estacionado area critica"},
+            {id:15, description:"Estacionado area impedidos"},
+            {id:16, description:"Estacionado rampa impedidos"},
+             {id:17, description:"Otros"},
+              {id:18, description:"Langosta"}
       ];
       console.log("Loaded Infractions");
       $localstorage.setObject('typeInfractions', {infractions});

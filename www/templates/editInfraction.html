@@ -1,9 +1,18 @@
-<ion-view title="Infraciones">
+<ion-view cache-view="false" title="Infraciones">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <h3>Seleccione todas las violaciones que apliquen:</h3>
         <form class="item-text-wrap">
-            <ion-checkbox ng-model="isChecked" ng-repeat="asset in assets" ng-change="checkedOrNot(asset, isChecked, $index)" ng-init='isChecked=false'> {{asset}}</ion-checkbox>
+        	<ion-checkbox ng-model="isChecked" ng-repeat="asset in assets" ng-change="checkedOrNot(asset, isChecked, $index)" ng-init='isChecked=hasViolation(asset)' > {{asset.description}}</ion-checkbox>
             <div class="spacer" style="height: 40px;"></div>
+              <ion-list>
+        <div class="spacer" style="height: 40px;"></div>
+          <div class="text-wrap">
+          <ion-item>
+                 <textarea class="form-control" id="comments" ng-model ="comment.main"  style="width:100%;height:100px;font-size:27px"> {{infraction.main_comment}}</textarea>
+                 </ion-item>
+            </div>        
+        </ion-list>
+        <div class="spacer" style="height: 20px;"></div>
             <a  id="multaNueva35-button5" class="button button-positive button-large button-block icon-right ion-ios-arrow-right"  ng-click="saveChanges()">Guardar</a>
         </form>
     </ion-content>

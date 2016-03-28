@@ -18,9 +18,12 @@
             </label>
            <div class="spacer" style="height: 40px;"></div>
             <ion-item class="item-divider " style="font-size:20px; line-height: normal;">Infraccion:</ion-item>
-            <ion-item class="item-text-wrap icon-left ion-ios-checkmark-empty"ng-repeat="infraction in infrac" style="font-size:20px; line-height: normal;"> {{infraction}} </ion-item>
-        
+            <ion-item class="item-text-wrap icon-left ion-ios-checkmark-empty"ng-repeat="infraction in infrac" style="font-size:20px; line-height: normal;"> {{infraction.description}} </ion-item>
+            <div class="spacer" style="height: 40px;"></div>
+            <ion-item class="item-divider " style="font-size:20px; line-height: normal;">Comments:</ion-item>
+         <ion-item  style="font-size:20px; line-height: normal;"> {{mainComment}} </ion-item>
         </ion-list>
+
         <div class="spacer" style="height: 40px;"></div>
         <div style="text-align:center;">
             <ion-slide-box auto-play="true" does-continue = "true" slide-interval="2000">
@@ -30,9 +33,10 @@
                  
               </ion-slide>
         </ion-slide-box>  
+        
         </div>
         <div class="spacer" style="height: 40px;"></div>
         <a id="multaNueva55-button8" class="button button-balanced button-large button-block icon-left ion-checkmark-circled" ng-click="submitInfraction()">Aceptar Multa</a>
-        <ion-list></ion-list>
+       
     </ion-content>
 </ion-view>
