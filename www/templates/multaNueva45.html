@@ -14,7 +14,7 @@
                   <div>
                       <p style="font-size:20px; line-height: normal;">Toma una foto para que tengas evidencia que respalde la multa.</p>
                   </div>  
-             <p style="font-size:20px; line-height: normal;">Cantidad de fotos tomadas: {{images.lenght}}</p>        
+             <p style="font-size:20px; line-height: normal;">Cantidad de fotos tomadas: <B>{{images.length}}</B></p>        
         <ion-slide-box auto-play="true" does-continue = "true" slide-interval="2000">
              <ion-slide ng-repeat="image in images">
                 
@@ -24,7 +24,7 @@
         </ion-slide-box> 
 
 
-        <button id="multaNueva45-button6" class="button button-stable button-block icon-left ion-ios-camera" ng-click="takePicture()">Tomar Foto</button>
+        <button id="multaNueva45-button6" class="button button-stable button-large button-block icon-left ion-ios-camera" ng-click="takePicture()">Tomar Foto</button>
          <ion-list>
         <div class="spacer" style="height: 40px;"></div>
           <div class="text-wrap">

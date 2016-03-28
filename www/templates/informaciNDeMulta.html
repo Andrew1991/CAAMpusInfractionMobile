@@ -18,10 +18,11 @@
            
             <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Infracciones:</ion-item>
             <ion-item ng-repeat="violation in infraction.violations" class = "icon-left ion-ios-checkmark-empty" style="font-size:20px; line-height: normal;"> {{violation.description}} </ion-item>
-            
-             <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Comments:</ion-item>
+
+             <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Commentarios:</ion-item>
             <ion-item  style="font-size:20px; line-height: normal;"> {{infraction.main_comment}} </ion-item>
              <div class="spacer" style="height: 40px;"></div>
+             <p style="font-size:20px; line-height: normal;">Cantidad de fotos tomadas: <B>{{infraction.images.length}}</B></p>
         </ion-list>
            <ion-slide-box>
              <ion-slide ng-repeat="image in infraction.images">

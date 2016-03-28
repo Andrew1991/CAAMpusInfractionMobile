@@ -314,7 +314,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
             console.log("selected after remove: ", $scope.selected);
         }
     };
-    $scope.comment = {};//comment.main
+   
     $scope.saveChanges = function(){
     	console.log("trying to save", $scope.selected.length )
     	if($scope.selected.length == 0){
@@ -334,7 +334,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		             	//add new things to infraction
 		             	$scope.infraction.violations = $scope.selected;
 		             	$scope.infraction.violations_id =  $scope.IDselected;
-		             	$scope.infraction.main_comment = $scope.comment.main;
+		             	$scope.infraction.main_comment = $scope.infraction.main_comment;
 		             	
 		             	 infractions.loadInfractions.push($scope.infraction);
 		             	 console.log("after push :", infractions.loadInfractions);
