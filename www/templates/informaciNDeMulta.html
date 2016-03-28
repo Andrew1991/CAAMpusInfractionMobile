@@ -1,0 +1,34 @@
+<ion-view title="Información de Multa">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <a ui-sref="cAAMpusInfraction.multasDeHoy" id="informaciNDeMulta-button17" class="button button-calm button-large button-block icon-left ion-ios-undo-outline">Regresar a Multas de Hoy</a>
+        <ion-list></ion-list>
+        <ion-list>
+            <ion-item class="item-thumbnail-left">
+                <img src="img/O1E3kUmwQjGONonGYvS6_user.jpg">
+
+                <h2 style="font-size:20px; line-height: normal;"><B>{{infraction.vehicle.make}} {{infraction.vehicle.Modal}}</B></h2>
+                <p style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.tablilla}}</p>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+                         
+               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;"> Zona: </B> {{infraction.zone}}</ion-item>          
+               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Fecha:</B> {{infraction.date | date:'yyyy-MM-dd'}} <B>Hora:</B> {{infraction.date | date:'HH:mm:ss'}} </ion-item>
+            
+           
+            <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Infracciones:</ion-item>
+            <ion-item ng-repeat="violation in infraction.violations" class = "icon-left ion-ios-checkmark-empty" style="font-size:20px; line-height: normal;"> {{violation}} </ion-item>
+             <div class="spacer" style="height: 40px;"></div>
+        </ion-list>
+           <ion-slide-box>
+             <ion-slide ng-repeat="image in infraction.images">
+                
+                        <img ng-src="{{image}}" style="max-width:100%;max-height:100%,width:300px;height:350px;margin:auto;display:block" class="rotate90">
+                 
+              </ion-slide>
+        </ion-slide-box>  
+        <a href={{"#/infraction_edit/"+infraction.id}} id="informaciNDeMulta-button20" class="button button-positive button-large button-block icon-left ion-edit">Editar Multa</a>
+        <a id="informaciNDeMulta-button15" class="button button-assertive button-large button-block icon-left ion-trash-b" ng-click="cancelInfraction()">Cancelar Multa</a>
+        <ion-list></ion-list>
+    </ion-content>
+</ion-view>

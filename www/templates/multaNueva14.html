@@ -1,0 +1,19 @@
+<ion-view title="Multa Nueva (1/4)">
+    <ion-content overflow-scroll="true" padding="true" scroll="false" class="has-header">
+        <form class="list">
+            <div class="spacer" style="width: 300px; height: 17px;"></div>
+            <div class="button-bar"></div>
+        </form>
+        <form class="list">
+            <h4 style="font-size:20px; line-height: normal;">Entra el Número de Tablilla:</h4>
+            <label class="item item-input" name="licence_plate">
+                <input id="foo" type="text" placeholder="Número de Tablilla" ng-model="vehicle.plate_number" ng-maxlength="6" capitalize style="font-size:20px; line-height: normal;">
+            </label>
+            <div class="button-bar"></div>
+            <div class="spacer" style="width: 300px; height: 17px; "></div>
+            <a  id="multaNueva14-button18" class="button button-positive button-large button-block icon-left ion-model-s" ng-click="findVehicle()">Buscar Carro</a>
+        </form>
+        <a ui-sref="cAAMpusInfraction.cAAMpusInfraction2" id="multaNueva14-button16" class="button button-calm button-large button-block icon-left ion-home">Regresar a Página Principal</a>
+
+    </ion-content>
+</ion-view>

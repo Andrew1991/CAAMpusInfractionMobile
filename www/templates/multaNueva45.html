@@ -1,0 +1,29 @@
+<ion-view title="Multa Nueva (4/5)">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <form class="list">
+            <label class="item item-input item-select item-positive ">
+                  <div class="input-label" style="font-size:20px; line-height: normal;">
+                      Zona de Infraccion
+                  </div>
+                      <select ng-model="mySelect" ng-change="showSelectValue(mySelect)">
+                          <option ng-repeat="zone in zones" > {{zone.new_code}}  {{zone.caption_en}}</option>                          
+                      </select>
+            </label>
+                  </form>
+                  <h3 style="font-size:20px; line-height: normal;">¡Toma una foto! </h3>
+                  <div>
+                      <p style="font-size:20px; line-height: normal;">Toma una foto para que tengas evidencia que respalde la multa.</p>
+                  </div>    
+        <ion-slide-box auto-play="true" does-continue = "true" slide-interval="2000">
+             <ion-slide ng-repeat="image in images">
+                
+                        <img ng-src="{{image}}" style="max-width:100%;max-height:100%,width:300px;height:300px;margin:auto;display:block" class="rotate90">
+                 
+              </ion-slide>
+        </ion-slide-box>   
+
+        <button id="multaNueva45-button6" class="button button-stable button-block icon-left ion-ios-camera" ng-click="takePicture()">Tomar Foto</button>
+        <a  id="multaNueva45-button7" class="button button-positive button-large button-block icon-right ion-ios-arrow-right" ng-click="nextView()">Siguiente</a>
+    </ion-content>
+</ion-view>
+

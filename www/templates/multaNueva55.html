@@ -1,0 +1,38 @@
+<ion-view title="Multa Nueva (5/5)">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <h4 style="font-size:20px; line-height: normal;">Confirma los Detalles de la Multa:</h4>
+        
+        <ion-list>
+        
+            <ion-item class="item-thumbnail-left">
+                <img src="img/O1E3kUmwQjGONonGYvS6_user.jpg">
+                 <h2 style="font-size:20px; line-height: normal;">{{vehicle.make}} {{vehicle.Model}} </h2>
+                <p style="font-size:20px; line-height: normal;">Tablilla: {{vehicle.tablilla}}</p>
+                <p style="font-size:20px; line-height: normal;">Numero de Permiso: {{vehicle.permiso}}</p>
+            </ion-item>
+            <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Zona:</ion-item>            
+             <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;">{{selectedZone}}</ion-item>
+              <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Fecha y Hora</ion-item>   
+            <label class="item item-input">
+                <span class="input-label" style="font-size:20px; line-height: normal;">Fecha: {{date | date:'yyyy-MM-dd'}} Hora: {{date | date:'HH:mm:ss'}}</span>
+            </label>
+           <div class="spacer" style="height: 40px;"></div>
+            <ion-item class="item-divider " style="font-size:20px; line-height: normal;">Infraccion:</ion-item>
+            <ion-item class="item-text-wrap icon-left ion-ios-checkmark-empty"ng-repeat="infraction in infrac" style="font-size:20px; line-height: normal;"> {{infraction}} </ion-item>
+        
+        </ion-list>
+        <div class="spacer" style="height: 40px;"></div>
+        <div style="text-align:center;">
+            <ion-slide-box auto-play="true" does-continue = "true" slide-interval="2000">
+             <ion-slide ng-repeat="image in images">
+                
+                        <img ng-src="{{image}}" style="max-width:100%;max-height:100%,width:350px;height:350px;margin:auto;display:block" class="rotate90">
+                 
+              </ion-slide>
+        </ion-slide-box>  
+        </div>
+        <div class="spacer" style="height: 40px;"></div>
+        <a id="multaNueva55-button8" class="button button-balanced button-large button-block icon-left ion-checkmark-circled" ng-click="submitInfraction()">Aceptar Multa</a>
+        <ion-list></ion-list>
+    </ion-content>
+</ion-view>
