@@ -179,7 +179,8 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	 	violations_id: $scope.id_violations,
 	 	images: $scope.images,
 	 	cancel_flag: false,
-	 	main_comment: $scope.mainComment
+	 	main_comment: $scope.mainComment, 
+	 	delete_comment: ""
 	 	
 	 };
 	
@@ -223,19 +224,39 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 })
 
 //informacion de multa
-.controller('informaciNDeMultaCtrl', function($scope, $stateParams, $filter ,$localstorage, $ionicHistory, $window) {
+.controller('informaciNDeMultaCtrl', function($scope, $ionicModal, $stateParams, $filter ,$localstorage, $ionicHistory, $window, DownloadAll) {
 	$ionicHistory.clearHistory();
 	$ionicHistory.clearCache();
-    $ionicHistory.clearHistory();
-
+    
+   
+    $ionicModal.fromTemplateUrl('templates/cancelInfraction.html', {
+			    scope: $scope
+			  }).then(function(cancel_Infraction) {
+			    $scope.cancel_Infraction = cancel_Infraction;
+		  });
 	$scope.holdInfractions = $localstorage.getObject('Infractions');
 	$scope.infractions = $scope.holdInfractions.loadInfractions;
 	$scope.infraction = $filter('filter')($scope.infractions, {id:$stateParams.InfractionID})[0];
-	console.log("Infraction chosen information: ", $scope.infraction.id);
-	var infractions = [];
+	
+	$scope.deleteButton = !$scope.infraction.cancel_flag;
+	$scope.editButton = !$scope.infraction.cancel_flag;
+	$scope.deleteMessage = $scope.infraction.cancel_flag;
 
+	var infractions = [];
 	$scope.cancelInfraction = function(){
-		  infractions = $localstorage.getObject('Infractions')
+		$scope.cancel_Infraction.show();
+		 
+	};
+
+	$scope.closeCancel = function(){
+		$scope.cancel_Infraction.hide();
+	}
+
+	$scope.editInfraction = function(){		
+		$ionicHistory.clearCache();			
+	}
+	$scope.confirmCancel = function(){
+		 infractions = $localstorage.getObject('Infractions')
 	      for(var i=0; i < infractions.loadInfractions.length; i++)
 	       {             
 	             if(infractions.loadInfractions[i].id == $scope.infraction.id)
@@ -244,37 +265,19 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		             	infractions.loadInfractions.splice(i,1);
 		             	$scope.infraction.cancel_flag = true;
 		             	infractions.loadInfractions.push($scope.infraction);
+		             	DownloadAll.clearInfractions();
+		             	for(var j =0; j< infractions.loadInfractions.length ; j++){
+		             		console.log(j);
+		             		DownloadAll.addEditedInfraction(infractions.loadInfractions[j]);
+		             	}
 	             }
 	      }
-	      console.log("cancel flag pressed. Cancel flag in infraction changed. must disable cancel button");
+	      //console.log("cancel flag pressed. Cancel flag in infraction changed. must disable cancel button");
+	      $scope.cancel_Infraction.hide();
+	      $scope.deleteButton = false;
+	      $scope.editButton = false;
+	      $scope.deleteMessage = true;
 	};
-
-	$scope.editInfraction = function(){		
-		$ionicHistory.clearCache();			
-	}
-
-})
-   
-.controller('multaNueva24Ctrl', function($scope) {
-
-}) 
-   
-
- //home  main menu
-.controller('cAAMpusInfraction2Ctrl', function($scope, $state, $ionicPlatform, $ionicHistory) {
-	//console.log("home");
-	$ionicHistory.clearCache();
-	$ionicHistory.clearHistory();
-	$ionicPlatform.registerBackButtonAction(function () {
-		 if($state.current.name=="editInfraction"){
-		 	$ionicHistory.clearCache();
-		 	//console.log("dale back");
-       		 navigator.app.exitApp();
-   		 }
-    	else {
-      		navigator.app.backHistory();
-    		}	 
-		}, 100);
 
 })
 
@@ -353,6 +356,31 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 };
 
 })
+   
+.controller('multaNueva24Ctrl', function($scope) {
+
+}) 
+   
+
+ //home  main menu
+.controller('cAAMpusInfraction2Ctrl', function($scope, $state, $ionicPlatform, $ionicHistory) {
+	//console.log("home");
+	$ionicHistory.clearCache();
+	$ionicHistory.clearHistory();
+	$ionicPlatform.registerBackButtonAction(function () {
+		 if($state.current.name=="editInfraction"){
+		 	$ionicHistory.clearCache();
+		 	//console.log("dale back");
+       		 navigator.app.exitApp();
+   		 }
+    	else {
+      		navigator.app.backHistory();
+    		}	 
+		}, 100);
+
+})
+
+
 
 .controller('informaciNDeUsuarioCtrl', function($scope) {
 
