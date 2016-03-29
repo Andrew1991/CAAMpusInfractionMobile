@@ -34,11 +34,16 @@
                  
               </ion-slide>
         </ion-slide-box>  
-        <div ng-show="editButton"
+        <div ng-show="editButton">
         <a href={{"#/infraction_edit/"+infraction.id}} id="informaciNDeMulta-button20" class="button button-positive button-large button-block icon-left ion-edit" ng-click="editInfraction()">Editar Multa</a> </div>
         <div ng-show="deleteButton">
         <a id="informaciNDeMulta-button15" class="button button-assertive button-large button-block icon-left ion-trash-b" ng-click="cancelInfraction()" >Cancelar Multa</a>
         </div>
+
+        <div ng-show= "deleteComment">
+         <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Comentario de Cancelacion:</ion-item>
+            <ion-item  style="font-size:20px; line-height: normal;"> {{infraction.delete_comment}} </ion-item>
+            </div>
        
     </ion-content>
 </ion-view>

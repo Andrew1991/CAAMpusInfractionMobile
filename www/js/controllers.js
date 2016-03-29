@@ -110,35 +110,35 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 
 	$rootScope.images = [];
 	
-	 var options = {
-	  quality : 50,
-      destinationType: Camera.DestinationType.DATA_URL,      
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 120,
-      targetHeight: 120,
-      correctOrientation: true,
-      saveToPhotoAlbum: true
-    };
+	//  var options = {
+	//   quality : 50,
+ //      destinationType: Camera.DestinationType.DATA_URL,      
+ //      encodingType: Camera.EncodingType.JPEG,
+ //      targetWidth: 120,
+ //      targetHeight: 120,
+ //      correctOrientation: true,
+ //      saveToPhotoAlbum: true
+ //    };
 
-	$scope.takePicture = function(){
-		if($rootScope.images.length <= 2){   
-			$cordovaCamera.getPicture({options})
-			.then(function(data){
+	// $scope.takePicture = function(){
+	// 	if($rootScope.images.length <= 2){   
+	// 		$cordovaCamera.getPicture({options})
+	// 		.then(function(data){
 				
-				//console.log('Camera data: ' + angular.toJson(data));
-				$scope.pictureURL = data;
-				$rootScope.images.push(data);
-				$ionicSlideBoxDelegate.update();
-				console.log("image array: ", $rootScope.images);
-			}, function(error){
-				//console.log('Camera error: ' + angular.toJson(error));
-			});
-		}
-		else{
-			alert("Solo se puede un maximo de tres fotos!");
-		}
+	// 			//console.log('Camera data: ' + angular.toJson(data));
+	// 			$scope.pictureURL = data;
+	// 			$rootScope.images.push(data);
+	// 			$ionicSlideBoxDelegate.update();
+	// 			console.log("image array: ", $rootScope.images);
+	// 		}, function(error){
+	// 			//console.log('Camera error: ' + angular.toJson(error));
+	// 		});
+	// 	}
+	// 	else{
+	// 		alert("Solo se puede un maximo de tres fotos!");
+	// 	}
 			
-	};
+	// };
 	$scope.comment = {};
 	$scope.nextView = function()
 	{		
@@ -241,8 +241,10 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$scope.deleteButton = !$scope.infraction.cancel_flag;
 	$scope.editButton = !$scope.infraction.cancel_flag;
 	$scope.deleteMessage = $scope.infraction.cancel_flag;
+	$scope.deleteComment = $scope.infraction.cancel_flag;
 
 	var infractions = [];
+	$scope.comment = {};
 	$scope.cancelInfraction = function(){
 		$scope.cancel_Infraction.show();
 		 
@@ -264,6 +266,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		             	console.log("match. Now edit and remove old one" , infractions);
 		             	infractions.loadInfractions.splice(i,1);
 		             	$scope.infraction.cancel_flag = true;
+		             	$scope.infraction.delete_comment = $scope.comment.main;
 		             	infractions.loadInfractions.push($scope.infraction);
 		             	DownloadAll.clearInfractions();
 		             	for(var j =0; j< infractions.loadInfractions.length ; j++){
@@ -277,6 +280,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	      $scope.deleteButton = false;
 	      $scope.editButton = false;
 	      $scope.deleteMessage = true;
+	      $scope.deleteComment  = true;
 	};
 
 })
