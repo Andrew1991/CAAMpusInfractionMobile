@@ -1,13 +1,25 @@
-<ion-view title="Re (2/5)">
+<ion-view title="Registre Vehiculo (2/5)">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <h4>Información del Vehículo</h4>
         <form class="list">
-            <ion-item class="input" style="font-size:20px; line-height: normal;">  </ion-item>
-            <ion-item style="font-size:20px; line-height: normal;">Marca: {{vehicle.make}}</ion-item>
-            <ion-item style="font-size:20px; line-height: normal;">Modelo: {{vehicle.Model}}</ion-item>
-            <ion-item style="font-size:20px; line-height: normal;">Color: {{vehicle.Color}}</ion-item>
-            <ion-item style="font-size:20px; line-height: normal;">Vin: {{vehicle.Vin}}</ion-item>
-             <ion-item style="font-size:20px; line-height: normal;">Permit ID: {{vehicle.permiso}}</ion-item>
+
+             <label class="item item-input" name="licence_plate">
+                <span class="input-label">Tablilla:</span>
+                <input id="foo" type="text" placeholder="Número de Tablilla" ng-model="vehicle.plate_number" capitalize style="font-size:20px; line-height: normal;">
+            </label>
+            <label class="item item-input" name="Marca">
+                <span class="input-label">Marca:</span>
+                <input id="foo" type="text" placeholder="Marca" ng-model="vehicle.Marca" capitalize style="font-size:20px; line-height: normal;">
+            </label>
+            <label class="item item-input" name="Modelo">
+                <span class="input-label">Modelo:</span>
+                <input id="foo" type="text" placeholder="Modelo" ng-model="vehicle.Modelo" capitalize style="font-size:20px; line-height: normal;">
+            </label>
+            <label class="item item-input" name="Color">
+                <span class="input-label">Color:</span>
+                <input id="foo" type="text" placeholder="Color" ng-model="vehicle.Color" capitalize style="font-size:20px; line-height: normal;">
+            </label>            
+           
             <div class="spacer" style="height: 40px;"></div>
             <a ui-sref="multaNueva35" id="multaNueva25-button10" class="button button-positive button-large button-block icon-right ion-ios-arrow-right">Siguiente</a>
         </form>
