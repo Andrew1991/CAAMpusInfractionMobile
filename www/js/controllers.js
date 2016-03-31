@@ -33,6 +33,9 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		if(!secondCheck){
 				console.log("No vehicle found with licence plate: ", plate_number);
 				var r = confirm("Tablilla no fue encontrado. Desea registrar el vehiculo?");
+				if(r == true){
+					$state.go('registerVehicle');
+				}
 			}
 		if(secondCheck){
 			    $ionicHistory.clearCache();
@@ -396,6 +399,10 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 })
    
 .controller('editarMultaCtrl', function($scope) {
+
+})
+
+.controller('newVehicleCtrl', function($scope) {
 
 })
  
