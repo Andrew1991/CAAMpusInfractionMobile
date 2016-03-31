@@ -110,35 +110,35 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 
 	$rootScope.images = [];
 	
-	//  var options = {
-	//   quality : 50,
- //      destinationType: Camera.DestinationType.DATA_URL,      
- //      encodingType: Camera.EncodingType.JPEG,
- //      targetWidth: 120,
- //      targetHeight: 120,
- //      correctOrientation: true,
- //      saveToPhotoAlbum: true
- //    };
+	 var options = {
+	  quality : 50,
+      destinationType: Camera.DestinationType.DATA_URL,      
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 120,
+      targetHeight: 120,
+      correctOrientation: true,
+      saveToPhotoAlbum: true
+    };
 
-	// $scope.takePicture = function(){
-	// 	if($rootScope.images.length <= 2){   
-	// 		$cordovaCamera.getPicture({options})
-	// 		.then(function(data){
+	$scope.takePicture = function(){
+		if($rootScope.images.length <= 2){   
+			$cordovaCamera.getPicture({options})
+			.then(function(data){
 				
-	// 			//console.log('Camera data: ' + angular.toJson(data));
-	// 			$scope.pictureURL = data;
-	// 			$rootScope.images.push(data);
-	// 			$ionicSlideBoxDelegate.update();
-	// 			console.log("image array: ", $rootScope.images);
-	// 		}, function(error){
-	// 			//console.log('Camera error: ' + angular.toJson(error));
-	// 		});
-	// 	}
-	// 	else{
-	// 		alert("Solo se puede un maximo de tres fotos!");
-	// 	}
+				//console.log('Camera data: ' + angular.toJson(data));
+				$scope.pictureURL = data;
+				$rootScope.images.push(data);
+				$ionicSlideBoxDelegate.update();
+				console.log("image array: ", $rootScope.images);
+			}, function(error){
+				//console.log('Camera error: ' + angular.toJson(error));
+			});
+		}
+		else{
+			alert("Solo se puede un maximo de tres fotos!");
+		}
 			
-	// };
+	};
 	$scope.comment = {};
 	$scope.nextView = function()
 	{		
@@ -259,6 +259,10 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	}
 	$scope.confirmCancel = function(){
 		 infractions = $localstorage.getObject('Infractions')
+		 if(!$scope.comment.main){
+		 	alert("debe entrar un comentario de cancelacion");
+		 }
+		 else{
 	      for(var i=0; i < infractions.loadInfractions.length; i++)
 	       {             
 	             if(infractions.loadInfractions[i].id == $scope.infraction.id)
@@ -281,6 +285,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	      $scope.editButton = false;
 	      $scope.deleteMessage = true;
 	      $scope.deleteComment  = true;
+	  }
 	};
 
 })
