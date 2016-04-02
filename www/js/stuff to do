@@ -1,15 +1,9 @@
 List of things to do:
-1. In "Informacion de multa" cancel button must change when the person clicks it.
-2. In "Informacion de multa" Be able to edit an infraction. One must be able to edit infraction type
-3. In "multa nueva" if a person searches a plate number and it is not found a popup screen must apear and ask
-	if the person wishes to register the vehicle. 
-		i. create register window
-	   ii. After creating vehicle, create an infraction for the vehicle
-	  iii. create a storage for new vehicles created to upload later on into the server
+
+
 4. In step (4/5) the user must be able to delete the picture taken
-5. create a legit ID number for each ticket. This must contain the users ID mixed with the date
-6. Implement login/logout
+
+
 7. zones must fillter out by GPS coordinates
-8. clean code
-9. fix fonts style
+8. sort multas de hoy, and only show infractions taken by person logged in
  

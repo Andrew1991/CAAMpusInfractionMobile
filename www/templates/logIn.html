@@ -6,16 +6,16 @@
         <form class="list">
             <ion-list>
                 <label class="item item-input" name="username">
-                    <span class="input-label">Username</span>
-                    <input type="text" placeholder="">
+                    <span class="input-label" style="font-size:20px; line-height: normal;">Username:</span>
+                    <input type="text" placeholder="Entre su usuario" ng-model="userData.username" style="font-size:20px; line-height: normal;">
                 </label>
                 <label class="item item-input" name="user_pin">
-                    <span class="input-label">Pin</span>
-                    <input type="password" placeholder="">
+                    <span class="input-label" style="font-size:20px; line-height: normal;">Pin:</span>
+                    <input  type="tel" placeholder="Entre su Pin" style="-webkit-text-security:disc; font-size:20px; line-height: normal;" ng-model="userData.pin" >
                 </label>
             </ion-list>
             <div class="spacer" style="width: 300px; height: 31px;"></div>
-            <a ui-sref="cAAMpusInfraction.cAAMpusInfraction2" id="logIn-button1" class="button button-stable  button-block icon-left ion-log-in">Log in</a>
+            <a id="logIn-button1" class="button button-stable  button-block icon-left ion-log-in" ng-click="login()">Log in</a>
         </form>
         <div style="text-align:center;">
             <img src="img/TeamAlcaldeLogo.PNG" width="50%" height="auto">

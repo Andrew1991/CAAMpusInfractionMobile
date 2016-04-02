@@ -1,4 +1,4 @@
-<ion-view title="Multas de Hoy">
+<ion-view cache-view="false" title="Multas de Hoy">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         
         <div class="list card">
@@ -6,7 +6,8 @@
             <div class="item item-body">
                 <ion-list>
                     <ion-item class="item-thumbnail-left item-icon-right" href={{"#/view_ticket/"+infraction.id}} ng-repeat="infraction in infractions">
-                        <img src="img/icon-lg-guides-blue1-300x300.png">
+                        <img src="img/icon-lg-guides-blue1-300x300.png"  ng-if="!infraction.cancel_flag">
+                        <img src="img/Delete.png" ng-if="infraction.cancel_flag">
                          <i class="icon ion-ios-arrow-right"></i>
                         <h2 style="font-size:20px; line-height: normal;">{{infraction.vehicle.make}} {{infraction.vehicle.Model}}</h2>
                         <p  style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.tablilla}}     <B>Hora:</B> {{ infraction.date | date:'HH:mm:ss'}}</p>
