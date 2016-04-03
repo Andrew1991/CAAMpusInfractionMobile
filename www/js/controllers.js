@@ -12,13 +12,14 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		else{
 			response = DownloadAll.login($scope.userData.username, $scope.userData.pin);
 			console.log("response: ", response);
-		}
-		if(response){
+			if(response){
 			console.log("Logging In");
 			$state.go('cAAMpusInfraction.cAAMpusInfraction2');
 		}else if(!response){
 			alert("Usuario o Pin incorrecto");
 		}
+		}
+		
 	}
 	
 
@@ -206,10 +207,10 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	var min =""+date.getMinutes();
 	var hour = ""+date.getHours();
 	var sec =""+date.getSeconds(); 
-	var _id = n.concat(month,dates, hour,min,sec);
+	$scope._id = n.concat(month,dates, hour,min,sec);
 	//create infraction Object
 	var infraction = {
-		id: _id,
+		id: $scope._id,
 		vehicle: $scope.vehicle,
 		date: $scope.date,
 		zone: $scope.selectedZone,
@@ -222,6 +223,20 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		officer: $scope.officer.FirstName
 
 	};	
+
+// 	var monthNames = [
+//   "January", "February", "March",
+//   "April", "May", "June", "July",
+//   "August", "September", "October",
+//   "November", "December"
+// ];
+
+// var date = new Date();
+// var day = date.getDate();
+// var monthIndex = date.getMonth();
+// var year = date.getFullYear();
+
+// console.log(day, monthNames[monthIndex], year);
 	
 	//Submits New Infraction
 	$scope.submitInfraction = function(){
@@ -243,11 +258,21 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 })
 
    //view todays infractions controller
-   .controller('multasDeHoyCtrl', function($scope, $localstorage, $state, $ionicPlatform, $ionicHistory) {
+   .controller('multasDeHoyCtrl', function($scope, $localstorage, $state, $ionicPlatform, $ionicHistory, DownloadAll) {
    	$ionicHistory.clearHistory();
    	$ionicHistory.clearCache();
    	$scope.holdInfractions = $localstorage.getObject('Infractions');
    	$scope.infractions = $scope.holdInfractions.loadInfractions;
+   	$scope.userInfraction = [];
+   	var User = DownloadAll.currentUser();
+   	var officer = User.FirstName;
+   	
+   	for(var i=0; i< $scope.infractions.length;i++){
+   		if($scope.infractions[i].officer == officer){
+   			$scope.userInfraction.push($scope.infractions[i]);
+   		}
+   	}
+   	console.log("Current user total Infractions: ", $scope.userInfraction.length);
 
    	$ionicPlatform.registerBackButtonAction(function () {
    		if($state.current.name=="cAAMpusInfraction.multasDeHoy"){

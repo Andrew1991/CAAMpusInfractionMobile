@@ -5,7 +5,7 @@
             <div class="item item-divider" style="font-size:25px; line-height: normal;">Multas Locales (Sin Procesar)</div>
             <div class="item item-body">
                 <ion-list>
-                    <ion-item class="item-thumbnail-left item-icon-right" href={{"#/view_ticket/"+infraction.id}} ng-repeat="infraction in infractions">
+                    <ion-item class="item-thumbnail-left item-icon-right" href={{"#/view_ticket/"+infraction.id}} ng-repeat="infraction in userInfraction">
                         <img src="img/icon-lg-guides-blue1-300x300.png"  ng-if="!infraction.cancel_flag">
                         <img src="img/Delete.png" ng-if="infraction.cancel_flag">
                          <i class="icon ion-ios-arrow-right"></i>
