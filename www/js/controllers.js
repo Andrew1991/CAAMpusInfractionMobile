@@ -8,15 +8,17 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		var response;
 		if(!$scope.userData.username || !$scope.userData.pin){
 			alert("Debe entrar un usuario y un numero de pin");
+			console.log("No loggin information provided");
 		}
 		else{
 			response = DownloadAll.login($scope.userData.username, $scope.userData.pin);
-			console.log("response: ", response);
+			//console.log("response: ", response);
 			if(response){
-			console.log("Logging In");
+			console.log("Logging In Succesfull");
 			$state.go('cAAMpusInfraction.cAAMpusInfraction2');
 		}else if(!response){
 			alert("Usuario o Pin incorrecto");
+			console.log("Login Information Incorrect");
 		}
 		}
 		
@@ -37,14 +39,14 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		}
 		else {
 			var plate_number = $scope.vehicle.plate_number;
-			console.log('Finding Vehicle with licence plate number: ', plate_number);
+			console.log('Searching Vehicle with licence plate number: ', plate_number);
 			$scope.holdVehicles = $localstorage.getObject('vehicles');
 		//searching vehicles:
 		for(var i =0; i< $scope.holdVehicles.vehicles.length; i++)
 		{
 			if($scope.holdVehicles.vehicles[i].tablilla == plate_number)
 			{
-				console.log("Vehicle Found");
+				//console.log("Vehicle Found");
 				$rootScope.position = i;
 				secondCheck =true;				
 			}
@@ -82,7 +84,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$rootScope.infractions = [];
 	$scope.hold = $localstorage.getObject('typeInfractions');
 	$scope.assets = $scope.hold.infractions;
-	console.log("assest: ", $scope.hold.infractions);	
+	//console.log("assest: ", $scope.hold.infractions);	
 	$scope.isChecked = false;
 	$scope.selected = [];
 	$scope.id_selected=[];
@@ -91,7 +93,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
     	if (isChecked) {        	
     		$scope.selected.push(asset);
     		$scope.id_selected.push(asset.id);
-    		console.log("selected: ", $scope.selected);
+    		console.log("selected Infraction ID: ", $scope.selected);
     	} else {
     		var _index = $scope.selected.indexOf(asset);
     		$scope.selected.splice(_index, 1);
@@ -126,7 +128,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	 $scope.showSelectValue = function(mySelect) {
 	 	console.log("Selected Zone: ", mySelect);
 	 	$rootScope.selectedZone = mySelect;
-	 	console.log("Saved selected Zone: ", $rootScope.selectedZone);
+	 	//console.log("Saved selected Zone: ", $rootScope.selectedZone);
 	 	e = "true";
 
 	 }
@@ -187,7 +189,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	//console.log("position: ", $rootScope.position);
 	if($rootScope.position == -1){
 		$scope.vehicle = $rootScope.createdVehicle;
-		console.log("created vehcile: ", $scope.vehicle)
+		//console.log("created vehcile: ", $scope.vehicle)
 	}
 	else{
 		$scope.vehicle = $scope.holdVehicles.vehicles[$rootScope.position];
@@ -199,7 +201,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$ionicSlideBoxDelegate.update();
 	$scope.mainComment = $rootScope.main_comment;
 	$scope.officer = DownloadAll.currentUser();
-	console.log("officer name: ", $scope.officer);
+	//console.log("officer name: ", $scope.officer);
 	var n = $scope.officer.username.substring(0,3);
 	var date = new Date();
 	var month = ""+date.getMonth();	
@@ -235,7 +237,6 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 // var day = date.getDate();
 // var monthIndex = date.getMonth();
 // var year = date.getFullYear();
-
 // console.log(day, monthNames[monthIndex], year);
 	
 	//Submits New Infraction
@@ -250,7 +251,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		$rootScope.position = "";
 		$rootScope.infractions = [];
 		DownloadAll.addInfraction(infraction);
-		console.log("Creating Infraction: ", infraction);
+		console.log("Creating New Infraction: ", infraction);
 		$state.go('cAAMpusInfraction.multasDeHoy');	
 	};
 
@@ -324,14 +325,14 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 			{             
 				if(infractions.loadInfractions[i].id == $scope.infraction.id)
 				{
-					console.log("match. Now edit and remove old one" , infractions);
+					//console.log("match. Now edit and remove old one" , infractions);
 					infractions.loadInfractions.splice(i,1);
 					$scope.infraction.cancel_flag = true;
 					$scope.infraction.delete_comment = $scope.comment.main;
 					infractions.loadInfractions.push($scope.infraction);
 					DownloadAll.clearInfractions();
 					for(var j =0; j< infractions.loadInfractions.length ; j++){
-						console.log(j);
+						//console.log(j);
 						DownloadAll.addEditedInfraction(infractions.loadInfractions[j]);
 					}
 				}
@@ -354,7 +355,6 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$ionicHistory.clearHistory();
 	$scope.infractions = $scope.holdInfractions.loadInfractions;
 	$scope.infraction = $filter('filter')($scope.infractions, {id:$stateParams.InfractionID})[0];
-	console.log("Infraction chosen information: ", $scope.infraction);
 	var infractions = [];
 	$ionicHistory.clearCache();
 	$ionicHistory.clearHistory();
@@ -385,7 +385,6 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	};
 
 	$scope.saveChanges = function(){
-		console.log("trying to save", $scope.selected.length )
 		if($scope.selected.length == 0){
 			alert("Debe seleccionar alguna infraccion");
 		}
@@ -393,7 +392,6 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 			$ionicHistory.clearCache();
 			$ionicHistory.clearHistory();
 			infractions = $localstorage.getObject('Infractions')
-			console.log("before looop: ", infractions.loadInfractions[1]);
 			for(var i=0; i < infractions.loadInfractions.length; i++)
 			{             
 				if(infractions.loadInfractions[i].id == $scope.infraction.id)
@@ -406,11 +404,9 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		             	$scope.infraction.main_comment = $scope.infraction.main_comment;
 		             	
 		             	infractions.loadInfractions.push($scope.infraction);
-		             	console.log("after push :", infractions.loadInfractions);
 		             	// $localstorage.clear('Infractions');
 		             	DownloadAll.clearInfractions();
 		             	for(var j =0; j< infractions.loadInfractions.length ; j++){
-		             		console.log(j);
 		             		DownloadAll.addEditedInfraction(infractions.loadInfractions[j]);
 		             	}
 
