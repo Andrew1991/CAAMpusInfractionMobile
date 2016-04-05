@@ -498,9 +498,9 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 
  	$scope.vehicle = {
  		tablilla: "",
- 		make: "",
- 		modal: "",
- 		Color: "",
+ 		brand: "",
+ 		model: "",
+ 		color: "",
  		permiso: "",
  		year: ""
  	};
