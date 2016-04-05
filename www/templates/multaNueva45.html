@@ -9,6 +9,10 @@
                           <option ng-repeat="zone in zones" > {{zone.new_code}}  {{zone.caption_en}}</option>                          
                       </select>
             </label>
+              <div ng-show="clampWarning">       
+                <ion-item class="button button-assertive button-large disabled button-block icon-right ion-alert-circled" style="font-size:20px;"><B>Langosta</B></ion-item> 
+                </div>
+
                   </form>
                   <h3 style="font-size:20px; line-height: normal;">¡Toma una foto! </h3>
                   <div>

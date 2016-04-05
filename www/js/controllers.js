@@ -1,9 +1,10 @@
 angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 //login view controller
-.controller('logInCtrl', function($scope, $ionicHistory, DownloadAll, $state) {
+.controller('logInCtrl', function($scope, $ionicHistory, DownloadAll, $state, $rootScope) {
 	$ionicHistory.clearCache();
 	$scope.userData = {};
-	
+	$rootScope.bool = true;
+	$rootScope.clampWarn = false;
 	$scope.login = function(){
 		var response;
 		if(!$scope.userData.username || !$scope.userData.pin){
@@ -70,26 +71,36 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 
 })
    //(2/5) view vehicle information view
-   .controller('multaNueva25Ctrl', function($scope, $rootScope, $localstorage, $ionicPlatform, $rootScope, $ionicModal) {
-		//console.log($rootScope.position);
-		$scope.IncorrectInfoButton = true;
-		$scope.reportedMessage = false; 
-		$scope.holdVehicles = $localstorage.getObject('vehicles');
-		$scope.vehicle = $scope.holdVehicles.vehicles[$rootScope.position];
-		console.log("Displaying vehicle information (2/5): ", $scope.vehicle);
-		$scope.comment = {};
-		$ionicModal.fromTemplateUrl('templates/informacionIncorrecta.html', {
-		scope: $scope
-	}).then(function(incorrect_vehicle_info) {
-		$scope.incorrect_vehicle_info = incorrect_vehicle_info;
+   .controller('multaNueva25Ctrl', function($scope, $rootScope, $localstorage, $ionicPlatform, $rootScope, $ionicModal, $ionicPopup) {
+	
+	$scope.IncorrectInfoButton = $rootScope.bool;
+	$scope.reportedMessage = !$rootScope.bool; 
+	$scope.holdVehicles = $localstorage.getObject('vehicles');
+	$scope.vehicle = $scope.holdVehicles.vehicles[$rootScope.position];
+	console.log("Displaying vehicle information (2/5): ", $scope.vehicle);
+	
+	$scope.comment = {};
+	if($scope.vehicle.numeroDeMultas >= 3 && $scope.vehicle.isRegistered == 0 ){
+		$ionicPopup.alert({title: 'Langosta',
+   							template: 'Vehicle No esta registrado, y contiene 3 o mas multas. Puede proceder con una langosta si desea'});
+		$rootScope.clampWarn = true;
+		$scope.clampWarning = $rootScope.clampWarn;
+		
+	}
+	$ionicModal.fromTemplateUrl('templates/informacionIncorrecta.html', {
+	scope: $scope
+		}).then(function(incorrect_vehicle_info) {
+			$scope.incorrect_vehicle_info = incorrect_vehicle_info;
 	});
-$scope.incorrectInfo = function(){
+	//show incorrectInfo Popup
+	$scope.incorrectInfo = function(){
 		$scope.incorrect_vehicle_info.show();		 
 	};
+	//close incorrectInfo Popup
 	$scope.closeCancel = function(){
 		$scope.incorrect_vehicle_info.hide();
 	};
-	
+	//confirm comment inserted for editing
 	$scope.confirmReport = function(){
 		
 		if(!$scope.comment.informacionIncorecto){
@@ -97,8 +108,9 @@ $scope.incorrectInfo = function(){
 		}
 		else{
 			  $rootScope.incorrectInformationComment = $scope.comment.informacionIncorecto;
-			  $scope.IncorrectInfoButton = false;
-			  $scope.reportedMessage = true; 
+			  $rootScope.bool = false;
+			  $scope.IncorrectInfoButton = $rootScope.bool;
+			  $scope.reportedMessage = !$rootScope.bool; 
 			  $scope.incorrect_vehicle_info.hide();
 			} 
 	};
@@ -108,6 +120,7 @@ $scope.incorrectInfo = function(){
 //   (3/5) choose infractions view controller
 .controller('multaNueva35Ctrl', function($scope, $rootScope, $state, $localstorage, $ionicPlatform) {	
 	$rootScope.infractions = [];
+	$scope.clampWarning = $rootScope.clampWarn;
 	$scope.hold = $localstorage.getObject('typeInfractions');
 	$scope.assets = $scope.hold.infractions;
 	//console.log("assest: ", $scope.hold.infractions);	
@@ -147,6 +160,7 @@ $scope.incorrectInfo = function(){
 .controller('multaNueva45Ctrl', function($ionicHistory, $state, $scope, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $rootScope, $localstorage, $ionicPlatform) {
 	$scope.pictureURL = 'http://placehold.it/300x300';	
 	$rootScope.selectedZone;
+	$scope.clampWarning = $rootScope.clampWarn;
 	$scope.holdzones = $localstorage.getObject('zones');
 	var e = "";
 	 // console.log("Loading all possible zones: ", $scope.holdzones.zones);	 
@@ -212,6 +226,7 @@ $scope.incorrectInfo = function(){
 	$scope.selectedZone = $rootScope.selectedZone;
 	$scope.holdVehicles = $localstorage.getObject('vehicles');
 	$scope.vehicle = {};
+	$scope.clampWarning = $rootScope.clampWarn;
 	//console.log("position: ", $rootScope.position);
 	if($rootScope.position == -1){
 		$scope.vehicle = $rootScope.createdVehicle;
@@ -278,6 +293,8 @@ $scope.incorrectInfo = function(){
 		$ionicHistory.clearCache();
 		$rootScope.position = "";
 		$rootScope.infractions = [];
+		$rootScope.bool = true;
+		$rootScope.clampWarn = false;
 		DownloadAll.addInfraction(infraction);
 		console.log("Creating New Infraction: ", infraction);
 		$state.go('cAAMpusInfraction.multasDeHoy');	
@@ -304,6 +321,10 @@ $scope.incorrectInfo = function(){
    		if($scope.infractions[i].officer == officer){
    			$scope.userInfraction.push($scope.infractions[i]);
    		}
+   	}
+   	if($scope.userInfraction.length == 0){
+   		$ionicPopup.alert({title: '0 multas',
+   							template: 'Usted no a dado multas en el dia de hoy'});
    	}
    }
    	console.log("Current user total Infractions: ", $scope.userInfraction.length);
