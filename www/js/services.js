@@ -32,12 +32,12 @@ theFactory.dailyInfractions = function(){
   {
    loadInfractions.push(infractions.loadInfractions[i]);
  }
- console.log("Todays infractions loaded from memory")
+ //console.log("Todays infractions loaded from memory")
 }
 //adds a new infraction into our local database to await to be uploaded
 theFactory.addInfraction = function(infraction){
 
-  console.log("Service recived the following infraction: ", infraction);
+ // console.log("Service recived the following infraction: ", infraction);
   loadInfractions.push(infraction);
   console.log("pushing infraction: ", loadInfractions);
   console.log("Total infractions :", loadInfractions.length);
@@ -47,7 +47,7 @@ theFactory.addInfraction = function(infraction){
 //adds a new infraction that was recently edited
 theFactory.addEditedInfraction = function(infraction){
 
-  console.log("Service recived the following infraction: ", infraction);
+  //console.log("Service recived the following infraction: ", infraction);
   loadInfractions.push(infraction);
   console.log("pushing infraction: ", loadInfractions);
   console.log("Total infractions :", loadInfractions.length);
@@ -118,7 +118,10 @@ var infractions = [
 {id:17, description:"Otros"},
 {id:18, description:"Langosta"}
 ];
-console.log("Loaded Infractions");
+
+
+
+
 $localstorage.setObject('typeInfractions', {infractions});
 
 
