@@ -230,7 +230,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	//console.log("position: ", $rootScope.position);
 	if($rootScope.position == -1){
 		$scope.vehicle = $rootScope.createdVehicle;
-		//console.log("created vehcile: ", $scope.vehicle)
+		console.log("created vehcile: ", $scope.vehicle)
 	}
 	else{
 		$scope.vehicle = $scope.holdVehicles.vehicles[$rootScope.position];
@@ -524,11 +524,12 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	 };
 
  	$scope.nextView = function(){
- 		if(!$scope.vehicle.tablilla || !$scope.vehicle.make || !$scope.vehicle.modal || !e ){
+ 		//console.log($scope.vehicle.tablilla, $scope.vehicle.brand, $scope.vehicle.model);
+ 		if(!$scope.vehicle.tablilla || !$scope.vehicle.brand || !$scope.vehicle.model || !e ){
  			alert("Debe llenar todos los campos");
  		}
  		else{
- 			$scope.vehicle.Color = selectedColor
+ 			$scope.vehicle.color = selectedColor
  			$rootScope.createdVehicle = $scope.vehicle;
  			console.log("New Vehicle is Being Registered: ", $rootScope.createdVehicle);
  			$state.go('multaNueva35');
