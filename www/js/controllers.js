@@ -173,35 +173,35 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 
 	 }
 
-	 // $rootScope.images = [];	
-	 // var options = {
-	 // 	quality : 50,
-	 // 	destinationType: Camera.DestinationType.DATA_URL,      
-	 // 	encodingType: Camera.EncodingType.JPEG,
-	 // 	targetWidth: 120,
-	 // 	targetHeight: 120,
-	 // 	correctOrientation: true,
-	 // 	saveToPhotoAlbum: true
-	 // };
-  //   //gives access to system camera. Allows up to three pictures to be taken
-  //   $scope.takePicture = function(){
-  //   	if($rootScope.images.length <= 2){   
-  //   		$cordovaCamera.getPicture({options})
-  //   		.then(function(data){				
-		// 		//console.log('Camera data: ' + angular.toJson(data));
-		// 		$scope.pictureURL = data;
-		// 		$rootScope.images.push(data);
-		// 		$ionicSlideBoxDelegate.update();
-		// 		console.log("image array: ", $rootScope.images);
-		// 	}, function(error){
-		// 		//console.log('Camera error: ' + angular.toJson(error));
-		// 	});
-  //   	}
-  //   	else{
-  //   		alert("Solo se puede un maximo de tres fotos!");
-  //   	}
+	 $rootScope.images = [];	
+	 var options = {
+	 	quality : 50,
+	 	destinationType: Camera.DestinationType.DATA_URL,      
+	 	encodingType: Camera.EncodingType.JPEG,
+	 	targetWidth: 120,
+	 	targetHeight: 120,
+	 	correctOrientation: true,
+	 	saveToPhotoAlbum: true
+	 };
+    //gives access to system camera. Allows up to three pictures to be taken
+    $scope.takePicture = function(){
+    	if($rootScope.images.length <= 2){   
+    		$cordovaCamera.getPicture({options})
+    		.then(function(data){				
+				//console.log('Camera data: ' + angular.toJson(data));
+				$scope.pictureURL = data;
+				$rootScope.images.push(data);
+				$ionicSlideBoxDelegate.update();
+				console.log("image array: ", $rootScope.images);
+			}, function(error){
+				//console.log('Camera error: ' + angular.toJson(error));
+			});
+    	}
+    	else{
+    		alert("Solo se puede un maximo de tres fotos!");
+    	}
 
-  //   };
+    };
 
     $scope.comment = {};
     $scope.nextView = function()
