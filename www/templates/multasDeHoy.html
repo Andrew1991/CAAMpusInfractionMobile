@@ -9,8 +9,8 @@
                         <img src="img/icon-lg-guides-blue1-300x300.png"  ng-if="!infraction.cancel_flag">
                         <img src="img/Delete.png" ng-if="infraction.cancel_flag">
                          <i class="icon ion-ios-arrow-right"></i>
-                        <h2 style="font-size:20px; line-height: normal;">{{infraction.vehicle.brand}} {{infraction.vehicle.model}}</h2>
-                        <p  style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.tablilla}}     <B>Hora:</B> {{ infraction.date | date:'HH:mm:ss'}}</p>
+                        <h2 style="font-size:20px; line-height: normal;">{{infraction.vehicle.make}} {{infraction.vehicle.model}}</h2>
+                        <p  style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.licensePlateID}}     <B>Hora:</B> {{ infraction.date | date:'HH:mm:ss'}}</p>
                              
                     </ion-item>
                 </ion-list>

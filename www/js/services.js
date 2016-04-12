@@ -8,23 +8,69 @@ angular.module('app.services', ['ionic.utils'])
   var userName = "";
   var users = "";
   var response = "";
-  //connects to server. downloads all necessary database info needed and is stored locally
-  theFactory.download = function() {
+  //connects to server. downloads all vehicles from database  and is stored locally
+  theFactory.DownloadVehicles = function() {
     return $http({
       method: 'GET',
-      url: "http://cercapr.cloudapp.net/PHP/test6.php"
+      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/vehicles"
     }).success(function(data){
-     theFactory.vehicles = data.vehicles;
-     theFactory.users = data.users;
-     theFactory.zones = data.zones;
-     var vehicles = theFactory.vehicles;
-     var users = theFactory.users;
-     var zones = theFactory.zones
-     $localstorage.setObject('vehicles', {vehicles});            
-     $localstorage.setObject('users', {users});
-     $localstorage.setObject('zones', {zones});   
+     theFactory.vehicles = data.data;     
+     var vehicles = theFactory.vehicles;     
+     $localstorage.setObject('vehicles', {vehicles});          
    });
   }
+
+  theFactory.DownloadZones = function() {
+    return $http({
+      method: 'GET',
+      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/zones"
+    }).success(function(data){
+     theFactory.zones = data.data;     
+     var zones = theFactory.zones;     
+     $localstorage.setObject('zones', {zones});          
+   });
+  }
+
+   theFactory.DownloadUsers = function() {
+    return $http({
+      method: 'GET',
+      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/user"
+    }).success(function(data){
+     theFactory.users = data.data;     
+     var users = theFactory.users;     
+     $localstorage.setObject('users', {users});          
+   });
+  }
+
+   theFactory.DownloadViolations = function() {
+    return $http({
+      method: 'GET',
+      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/violation"
+    }).success(function(data){
+     theFactory.violations = data.data;     
+     var violations = theFactory.violations;     
+     $localstorage.setObject('typeInfractions', {violations});          
+   });
+  }
+
+
+
+  // theFactory.download = function() {
+  //   return $http({
+  //     method: 'GET',
+  //     url: "http://cercapr.cloudapp.net/PHP/test6.php"
+  //   }).success(function(data){
+  //    theFactory.vehicles = data.vehicles;
+  //    theFactory.users = data.users;
+  //    theFactory.zones = data.zones;
+  //    var vehicles = theFactory.vehicles;
+  //    var users = theFactory.users;
+  //    var zones = theFactory.zones
+  //    $localstorage.setObject('vehicles', {vehicles});            
+  //    $localstorage.setObject('users', {users});
+  //    $localstorage.setObject('zones', {zones});   
+  //  });
+  // }
 //restores all infractions that have been not been upploaded into the server
 theFactory.dailyInfractions = function(){
   var infractions = $localstorage.getObject('Infractions')
@@ -32,7 +78,6 @@ theFactory.dailyInfractions = function(){
   {
    loadInfractions.push(infractions.loadInfractions[i]);
  }
- //console.log("Todays infractions loaded from memory")
 }
 //adds a new infraction into our local database to await to be uploaded
 theFactory.addInfraction = function(infraction){
@@ -64,7 +109,7 @@ theFactory.login = function(username, password){
    users = $localstorage.getObject('users').users;
    response = "";
   console.log(users);
-  var user = $filter('filter')(users, {username:username})[0];
+  var user = $filter('filter')(users, {email:username})[0];
   if(user){
     console.log("username found" , user);
     if(user.pin == password){
@@ -96,34 +141,6 @@ theFactory.logout = function(){
   response = "";
   $ionicHistory.clearCache();
 }
-
-var infractions = [
-{id:0, description: "Sin permiso de estacionamiento"},
-{id:1, description:"Permiso vencido"},
-{id:2, description:"Permiso no pegado al cristal"},
-{id:3, description: "Estacionado en area que no le corresponde"},
-{id:4, description:"Estacionado ocupando dos espacios"},
-{id:5, description: "Estacionado bloqueando otro vehiculo"},
-{id:6, description: "Estacionado en sitio no designado como area de estacionamiento"},
-{id:7, description:"Estacionado frente encintado amarillo"},
-{id:8, description: "Sobre la grama o en la acera"},
-{id:9, description:"Estacionado en area de carga y descarga"},
-{id:10, description:"No obedecer la senal del guardia"},
-{id:11, description: "No obedecer la rotulacion de transito"},
-{id:12, description: "Negligencia temeraria o imprudencia al conducir vehiculo de motor"},
-{id:13, description:"Silenciador ruidoso, aceleracion motor"},
-{id:14, description: "Estacionado area critica"},
-{id:15, description:"Estacionado area impedidos"},
-{id:16, description:"Estacionado rampa impedidos"},
-{id:17, description:"Otros"},
-{id:18, description:"Langosta"}
-];
-
-
-
-
-$localstorage.setObject('typeInfractions', {infractions});
-
 
 
 return theFactory;

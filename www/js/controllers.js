@@ -45,7 +45,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		//searching vehicles:
 		for(var i =0; i< $scope.holdVehicles.vehicles.length; i++)
 		{
-			if($scope.holdVehicles.vehicles[i].tablilla == plate_number)
+			if($scope.holdVehicles.vehicles[i].licensePlateID == plate_number)
 			{
 				//console.log("Vehicle Found");
 				$rootScope.position = i;
@@ -82,7 +82,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$scope.comment = {};
 	if($scope.vehicle.numeroDeMultas >= 3 && $scope.vehicle.isRegistered == 0 ){
 		$ionicPopup.alert({title: 'Langosta',
-   							template: 'Vehicle No esta registrado, y contiene 3 o mas multas. Puede proceder con una langosta si desea'});
+   							template: 'Vehiculo No esta registrado y contiene 3 o mas multas. Puede proceder con una langosta si desea'});
 		$rootScope.clampWarn = true;
 		$scope.clampWarning = $rootScope.clampWarn;
 		
@@ -122,7 +122,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$rootScope.infractions = [];
 	$scope.clampWarning = $rootScope.clampWarn;
 	$scope.hold = $localstorage.getObject('typeInfractions');
-	$scope.assets = $scope.hold.infractions;
+	$scope.assets = $scope.hold.violations;
 	//console.log("assest: ", $scope.hold.infractions);	
 	$scope.isChecked = false;
 	$scope.selected = [];
@@ -158,7 +158,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 })
 // (4/5) take picture and choose zones view controller
 .controller('multaNueva45Ctrl', function($ionicHistory, $state, $scope, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $rootScope, $localstorage, $ionicPlatform) {
-	$scope.pictureURL = 'http://placehold.it/300x300';	
+	
 	$rootScope.selectedZone;
 	$scope.clampWarning = $rootScope.clampWarn;
 	$scope.holdzones = $localstorage.getObject('zones');
@@ -173,35 +173,35 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 
 	 }
 
-	 $rootScope.images = [];	
-	 var options = {
-	 	quality : 50,
-	 	destinationType: Camera.DestinationType.DATA_URL,      
-	 	encodingType: Camera.EncodingType.JPEG,
-	 	targetWidth: 120,
-	 	targetHeight: 120,
-	 	correctOrientation: true,
-	 	saveToPhotoAlbum: true
-	 };
-    //gives access to system camera. Allows up to three pictures to be taken
-    $scope.takePicture = function(){
-    	if($rootScope.images.length <= 2){   
-    		$cordovaCamera.getPicture({options})
-    		.then(function(data){				
-				//console.log('Camera data: ' + angular.toJson(data));
-				$scope.pictureURL = data;
-				$rootScope.images.push(data);
-				$ionicSlideBoxDelegate.update();
-				console.log("image array: ", $rootScope.images);
-			}, function(error){
-				//console.log('Camera error: ' + angular.toJson(error));
-			});
-    	}
-    	else{
-    		alert("Solo se puede un maximo de tres fotos!");
-    	}
+	 // $rootScope.images = [];	
+	 // var options = {
+	 // 	quality : 50,
+	 // 	destinationType: Camera.DestinationType.DATA_URL,      
+	 // 	encodingType: Camera.EncodingType.JPEG,
+	 // 	targetWidth: 120,
+	 // 	targetHeight: 120,
+	 // 	correctOrientation: true,
+	 // 	saveToPhotoAlbum: true
+	 // };
+  //   //gives access to system camera. Allows up to three pictures to be taken
+  //   $scope.takePicture = function(){
+  //   	if($rootScope.images.length <= 2){   
+  //   		$cordovaCamera.getPicture({options})
+  //   		.then(function(data){				
+		// 		//console.log('Camera data: ' + angular.toJson(data));
+		// 		$scope.pictureURL = data;
+		// 		$rootScope.images.push(data);
+		// 		$ionicSlideBoxDelegate.update();
+		// 		console.log("image array: ", $rootScope.images);
+		// 	}, function(error){
+		// 		//console.log('Camera error: ' + angular.toJson(error));
+		// 	});
+  //   	}
+  //   	else{
+  //   		alert("Solo se puede un maximo de tres fotos!");
+  //   	}
 
-    };
+  //   };
 
     $scope.comment = {};
     $scope.nextView = function()
@@ -244,7 +244,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$scope.officer = DownloadAll.currentUser();
 	var incorrectVehicleInfo =  $rootScope.incorrectInformationComment;
 	//console.log("officer name: ", $scope.officer);
-	var n = $scope.officer.username.substring(0,3);
+	var n = $scope.officer.firstName.substring(0,3);
 	var date = new Date();
 	var month = ""+date.getMonth();	
 	var dates = ""+date.getDate();
@@ -254,18 +254,18 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$scope._id = n.concat(month,dates, hour,min,sec);
 	//create infraction Object
 	var infraction = {
-		id: $scope._id,
+		infractionNumber: $scope._id,
 		vehicle: $scope.vehicle,
 		date: $scope.date,
 		zone: $scope.selectedZone,
 		violations: $scope.infrac,
 		violations_id: $scope.id_violations,
 		images: $scope.images,
-		cancel_flag: false,
+		isCancelled: false,
 		main_comment: $scope.mainComment, 
 		delete_comment: "",
 		incorrectInfoComment: incorrectVehicleInfo,
-		officer: $scope.officer.FirstName
+		officer: $scope.officer.firstName
 
 	};	
 
@@ -311,7 +311,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
    	$scope.infractions = $scope.holdInfractions.loadInfractions;
    	$scope.userInfraction = [];
    	var User = DownloadAll.currentUser();
-   	var officer = User.FirstName;
+   	var officer = User.firstName;
    	if($scope.infractions == null){
    		$ionicPopup.alert({title: '0 multas',
    							template: 'Usted no a dado multas en el dia de hoy'});

@@ -21,7 +21,10 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
       StatusBar.styleDefault();
     }
    
-    DownloadAll.download();
+    DownloadAll.DownloadVehicles();
+    DownloadAll.DownloadZones();
+    DownloadAll.DownloadUsers();
+    DownloadAll.DownloadViolations();
     DownloadAll.dailyInfractions();
    
 

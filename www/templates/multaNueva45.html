@@ -6,7 +6,7 @@
                       Zona de Infraccion
                   </div>
                       <select ng-model="mySelect" ng-change="showSelectValue(mySelect)">
-                          <option ng-repeat="zone in zones" > {{zone.new_code}}  {{zone.caption_en}}</option>                          
+                          <option ng-repeat="zone in zones" > {{zone._id}}  {{zone.description}}</option>                          
                       </select>
             </label>
               <div ng-show="clampWarning">       
