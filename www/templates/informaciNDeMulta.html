@@ -5,7 +5,7 @@
         <ion-list>
             <ion-item class="item-thumbnail-left">
                 <img src="img/O1E3kUmwQjGONonGYvS6_user.jpg">
-                 <h2 style="font-size:20px; line-height: normal;"><B>Numero de Boleto: {{infraction.id}}</B></h2>
+                 <h2 style="font-size:20px; line-height: normal;"><B>Numero de Boleto: {{infraction.infractionNumber}}</B></h2>
                 <h2 style="font-size:20px; line-height: normal;"><B>{{infraction.vehicle.make}} {{infraction.vehicle.model}}</B></h2>
                 <p style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.licensePlateID}}</p>
                 <div ng-show="deleteMessage">
@@ -16,7 +16,7 @@
         <ion-list>
                          
                <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;"> Zona: </B> {{infraction.zone}}</ion-item>          
-               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Fecha:</B> {{infraction.date | date:'yyyy-MM-dd'}} <B>Hora:</B> {{infraction.date | date:'HH:mm:ss'}} </ion-item>
+               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Fecha:</B> {{infraction.createTime | date:'yyyy-MM-dd'}} <B>Hora:</B> {{infraction.createTime | date:'HH:mm:ss'}} </ion-item>
             
            
             <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Infracciones:</ion-item>

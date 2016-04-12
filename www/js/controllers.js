@@ -167,6 +167,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	 $scope.zones = $scope.holdzones.zones;	 
 	 $scope.showSelectValue = function(mySelect) {
 	 	console.log("Selected Zone: ", mySelect);
+	 	//console.log("Selected ZoneID: ", id);
 	 	$rootScope.selectedZone = mySelect;
 	 	//console.log("Saved selected Zone: ", $rootScope.selectedZone);
 	 	e = "true";
@@ -244,6 +245,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$scope.officer = DownloadAll.currentUser();
 	var incorrectVehicleInfo =  $rootScope.incorrectInformationComment;
 	//console.log("officer name: ", $scope.officer);
+	var ZoneID = $scope.selectedZone.substring(0,2);
 	var n = $scope.officer.firstName.substring(0,3);
 	var date = new Date();
 	var month = ""+date.getMonth();	
@@ -255,18 +257,26 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	//create infraction Object
 	var infraction = {
 		infractionNumber: $scope._id,
+		officerID: $scope.officer._id,		
 		vehicle: $scope.vehicle,
-		date: $scope.date,
-		zone: $scope.selectedZone,
-		violations: $scope.infrac,
-		violations_id: $scope.id_violations,
-		images: $scope.images,
+		infractionStatusID: 6,
+		zoneID: ZoneID,
+		feeAmount: "",
+		highestViolation: "",
 		isCancelled: false,
 		main_comment: $scope.mainComment, 
 		delete_comment: "",
 		incorrectInfoComment: incorrectVehicleInfo,
+		reportID: "",
+		creatorID: "",
+		createTime: $scope.date,
+		citationDate: "",
+		uploadTime: "",
+		zone: $scope.selectedZone,
+		violations: $scope.infrac,
+		violations_id: $scope.id_violations,
+		images: $scope.images,	
 		officer: $scope.officer.firstName
-
 	};	
 
 // 	var monthNames = [
@@ -351,12 +361,11 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	});
 	$scope.holdInfractions = $localstorage.getObject('Infractions');
 	$scope.infractions = $scope.holdInfractions.loadInfractions;
-	$scope.infraction = $filter('filter')($scope.infractions, {id:$stateParams.InfractionID})[0];
-	
-	$scope.deleteButton = !$scope.infraction.cancel_flag;
-	$scope.editButton = !$scope.infraction.cancel_flag;
-	$scope.deleteMessage = $scope.infraction.cancel_flag;
-	$scope.deleteComment = $scope.infraction.cancel_flag;
+	$scope.infraction = $filter('filter')($scope.infractions, {infractionNumber:$stateParams.InfractionID})[0];
+	$scope.deleteButton = !$scope.infraction.isCancelled;
+	$scope.editButton = !$scope.infraction.isCancelled;
+	$scope.deleteMessage = $scope.infraction.isCancelled;
+	$scope.deleteComment = $scope.infraction.isCancelled;
 
 	var infractions = [];
 	$scope.comment = {};
@@ -381,7 +390,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 				{
 					//console.log("match. Now edit and remove old one" , infractions);
 					infractions.loadInfractions.splice(i,1);
-					$scope.infraction.cancel_flag = true;
+					$scope.infraction.isCancelled = true;
 					$scope.infraction.delete_comment = $scope.comment.main;
 					infractions.loadInfractions.push($scope.infraction);
 					DownloadAll.clearInfractions();
@@ -497,8 +506,8 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
  .controller('newVehicleCtrl', function($scope, $state, $rootScope) {
 
  	$scope.vehicle = {
- 		tablilla: "",
- 		brand: "",
+ 		licensePlateID: "",
+ 		make: "",
  		model: "",
  		color: "",
  		permiso: "",
@@ -525,7 +534,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 
  	$scope.nextView = function(){
  		//console.log($scope.vehicle.tablilla, $scope.vehicle.brand, $scope.vehicle.model);
- 		if(!$scope.vehicle.tablilla || !$scope.vehicle.brand || !$scope.vehicle.model || !e ){
+ 		if(!$scope.vehicle.licensePlateID || !$scope.vehicle.make || !$scope.vehicle.model || !e ){
  			alert("Debe llenar todos los campos");
  		}
  		else{
