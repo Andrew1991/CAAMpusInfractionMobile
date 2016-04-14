@@ -8,11 +8,18 @@ angular.module('app.services', ['ionic.utils'])
   var userName = "";
   var users = "";
   var response = "";
+ //links
+  var vehiclesAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/vehicles";
+  var zonesAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/zones";
+  var usersAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/users";
+  var violationsAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/violations";
+  var edmundsAPI = "https://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=kwepp7rqza2hd2xkumq9hsuj";
+  var infractionUploadAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/infractions"
   //connects to server. downloads all vehicles from database  and is stored locally
   theFactory.DownloadVehicles = function() {
     return $http({
       method: 'GET',
-      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/vehicles"
+      url: vehiclesAPI
     }).success(function(data){
      theFactory.vehicles = data.data;     
      var vehicles = theFactory.vehicles;     
@@ -20,10 +27,21 @@ angular.module('app.services', ['ionic.utils'])
    });
   }
 
+   theFactory.DownloadEdmunds = function() {
+    return $http({
+      method: 'GET',
+      url: edmundsAPI
+    }).success(function(data){
+     theFactory.vehicles = data.data;     
+     var vehicles = theFactory.vehicles;     
+     $localstorage.setObject('edmundsAPI', {edmundsAPI});          
+   });
+  }
+
   theFactory.DownloadZones = function() {
     return $http({
       method: 'GET',
-      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/zones"
+      url: zonesAPI
     }).success(function(data){
      theFactory.zones = data.data;     
      var zones = theFactory.zones;     
@@ -34,7 +52,7 @@ angular.module('app.services', ['ionic.utils'])
    theFactory.DownloadUsers = function() {
     return $http({
       method: 'GET',
-      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/user"
+      url: usersAPI
     }).success(function(data){
      theFactory.users = data.data;     
      var users = theFactory.users;     
@@ -45,12 +63,28 @@ angular.module('app.services', ['ionic.utils'])
    theFactory.DownloadViolations = function() {
     return $http({
       method: 'GET',
-      url: "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/violation"
+      url: violationsAPI
     }).success(function(data){
      theFactory.violations = data.data;     
      var violations = theFactory.violations;     
      $localstorage.setObject('typeInfractions', {violations});          
    });
+  }
+
+  theFactory.UploadInfractions = function(infractions) {
+     return $http({
+      method: 'POST',
+      url: infractionUploadAPI,
+      data: infractions     
+  })
+  .success(function(data) {
+      // handle success things
+      console.log(data);
+  })
+  .error(function(data, status, headers, config) {
+      // handle error things
+      console.log(status);
+  })
   }
 
 
@@ -159,3 +193,4 @@ return theFactory;
             // Vehicles.color = data.Color;
             // Vehicles.vin = data.Vin;
 
+//php --info | grep error
