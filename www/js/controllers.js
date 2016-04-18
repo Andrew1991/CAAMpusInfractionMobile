@@ -5,6 +5,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	$scope.userData = {};
 	$rootScope.bool = true;
 	$rootScope.clampWarn = false;
+	$rootScope.create = false;
 	$scope.login = function(){
 		var response;
 		if(!$scope.userData.username || !$scope.userData.pin){
@@ -81,7 +82,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 	console.log("Displaying vehicle information (2/5): ", $scope.vehicle);
 	
 	$scope.comment = {};
-	if($scope.vehicle.numeroDeMultas >= 3 && $scope.vehicle.isRegistered == 0 ){
+	if($scope.vehicle.infractionCount >= 3 && $scope.vehicle.isRegistered == 0 ){
 		$ionicPopup.alert({title: 'Langosta',
    							template: 'Vehiculo No esta registrado y contiene 3 o mas multas. Puede proceder con una langosta si desea'});
 		$rootScope.clampWarn = true;
@@ -329,6 +330,13 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 		$rootScope.infractions = [];
 		$rootScope.bool = true;
 		$rootScope.clampWarn = false;
+		if($rootScope.create = true){
+			var car = $rootScope.createdVehicle;
+			DownloadAll.addUnregisteredVehicle(car);
+			car = "";
+			$rootScope.createdVehicle = "";
+			$rootScope.create = false;
+		}
 		DownloadAll.addInfraction(infraction);
 		console.log("Creating New Infraction: ", infraction);
 		$state.go('cAAMpusInfraction.multasDeHoy');	
@@ -345,6 +353,8 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
    //	console.log($scope.fractions);
    	$scope.holdInfractions = $localstorage.getObject('Infractions');
    	$scope.infractions = $scope.holdInfractions.loadInfractions;
+
+   	var vehicles = $localstorage.getObject('UnregisteredVehicle').loadVehicle;
    	$scope.userInfraction = [];
    	var User = DownloadAll.currentUser();
    	var officer = User.firstName;
@@ -376,6 +386,10 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
    	}, 100);
    
    	$scope.uploadInfractions = function(){
+   		console.log(vehicles);
+   		for(var i =0; i<vehicles.length; i++){
+   			DownloadAll.UploadVehicles(JSON.stringify(vehicles[i]));
+   		}
    		for(var i =0; i<$scope.infractions.length; i++){
    			console.log($scope.infractions[i]);
    			DownloadAll.UploadInfractions(JSON.stringify($scope.infractions[i]));
@@ -540,16 +554,20 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
 })
 
 //Regsiter a new vehicle view controller
- .controller('newVehicleCtrl', function($scope, $state, $rootScope) {
-
+ .controller('newVehicleCtrl', function($scope, $state, $rootScope, DownloadAll) {
+ 	$scope.date = new Date();
+ 	$scope.user = DownloadAll.currentUser();
+ 	console.log("user: ", $scope.user._id);
  	$scope.vehicle = {
- 		licensePlateID:$rootScope.licencePlate,
+ 		licensePlateID: $rootScope.licencePlate,
  		make: "",
  		model: "",
  		color: "",
- 		permiso: "",
- 		year: ""
+ 		creatorID: $scope.user._id,
+ 		createTime: $scope.date
  	};
+
+
  	$scope.colors = [
 		{name: 'Amarillo'},
 		{name: 'Anaranjado'},
@@ -578,6 +596,7 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router'])
  			$scope.vehicle.color = selectedColor
  			$rootScope.createdVehicle = $scope.vehicle;
  			console.log("New Vehicle is Being Registered: ", $rootScope.createdVehicle);
+ 			$rootScope.create = true;
  			$state.go('multaNueva35');
  		}
  		
