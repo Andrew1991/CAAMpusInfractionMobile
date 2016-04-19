@@ -25,6 +25,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
     DownloadAll.DownloadZones();
     DownloadAll.DownloadUsers();
     DownloadAll.DownloadViolations();
+    DownloadAll.DownloadEdmunds();
     DownloadAll.dailyInfractions();
    
 
