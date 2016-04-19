@@ -4,6 +4,7 @@ angular.module('app.services', ['ionic.utils'])
 
 	var theFactory = {};
   var loadInfractions = [];
+  var loadVehicle = [];
   var holdInfractions = [];
   var userName = "";
   var users = "";
@@ -87,6 +88,22 @@ angular.module('app.services', ['ionic.utils'])
   })
   }
 
+  theFactory.UploadVehicles = function(vehicles) {
+     return $http({
+      method: 'POST',
+      url: vehiclesAPI,
+      data: vehicles     
+  })
+  .success(function(data) {
+      // handle success things
+      console.log(data);
+  })
+  .error(function(data, status, headers, config) {
+      // handle error things
+      console.log(status);
+  })
+  }
+
 
 
   // theFactory.download = function() {
@@ -113,14 +130,25 @@ theFactory.dailyInfractions = function(){
    loadInfractions.push(infractions.loadInfractions[i]);
  }
 }
+theFactory.dailyUnregisteredVechiles = function(){
+  var vehicles = $localstorage.getObject('UnregisteredVehicle');
+  for(var i=0; i < vehicles.loadVehicle.length; i++)
+  {
+   loadInfractions.push(vehicles.loadVehicle[i]);
+ }
+}
 //adds a new infraction into our local database to await to be uploaded
 theFactory.addInfraction = function(infraction){
-
  // console.log("Service recived the following infraction: ", infraction);
-  loadInfractions.push(infraction);
-  console.log("pushing infraction: ", loadInfractions);
-  console.log("Total infractions :", loadInfractions.length);
+  loadInfractions.push(infraction); 
   $localstorage.setObject('Infractions',{loadInfractions});
+
+}
+
+theFactory.addUnregisteredVehicle = function(vehicle){
+ // console.log("Service recived the following infraction: ", infraction);
+  loadVehicle.push(vehicle); 
+  $localstorage.setObject('UnregisteredVehicle',{loadVehicle});
 
 }
 //adds a new infraction that was recently edited

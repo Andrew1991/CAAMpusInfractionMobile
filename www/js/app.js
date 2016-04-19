@@ -27,6 +27,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
     DownloadAll.DownloadViolations();
     DownloadAll.DownloadEdmunds();
     DownloadAll.dailyInfractions();
+    DownloadAll.dailyUnregisteredVechiles();
    
 
   });
