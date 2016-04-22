@@ -2,25 +2,63 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <h4>Registre Nuevo Vehículo</h4>
         <form class="list">
-
-             <label class="item item-input" name="licence_plate">
-                <span class="input-label">Tablilla: </span>
-                <input disabled id="foo" type="text"  ng-model="vehicle.licensePlateID" capitalize style="font-size:20px; line-height: normal;"> {{vehicle.licencePlateID}}
+             <label 
+                   class="item item-input" 
+                   name="licence_plate">
+                  <span 
+                      class="input-label">
+                        Tablilla: 
+                  </span>
+                  <input 
+                        disabled id="foo" 
+                        type="text"  
+                        ng-model="vehicle.licensePlateID" 
+                        capitalize style="font-size:20px; line-height: normal;"> 
+                          {{vehicle.licencePlateID}}
             </label>
-            <label class="item item-input" name="Marca">
-                <span class="input-label">Marca:</span>
-                <input id="foo" type="text" placeholder="Marca" ng-model="vehicle.make" capitalize style="font-size:20px; line-height: normal;">
+            <label 
+                  class="item item-input item-select"
+                  name="Marca">
+                <span 
+                      class="input-label">
+                      Marca:
+                </span>
+                <select 
+                      ng-model="make" 
+                      ng-change="refreshModels(make)" 
+                      style="font-size:20px; line-height: normal;">
+                          <option 
+                                ng-repeat="make in makes" > 
+                                     {{make}} 
+                          </option>                          
+               </select>
             </label>
-            <label class="item item-input" name="Modelo">
-                <span class="input-label">Modelo:</span>
-                <input id="foo" type="text" placeholder="Modelo" ng-model="vehicle.model" capitalize style="font-size:20px; line-height: normal;">
+            <label 
+                      class="item item-input item-select "
+                      name="Modelo">
+                    <span 
+                          class="input-label">
+                          Modelo:
+                    </span>
+                   <select 
+                         ng-model="model" 
+                         ng-change="selectModel(model)" 
+                         style="font-size:20px; line-height: normal;">
+                              <option 
+                                    ng-repeat="model in models"  > 
+                                        {{model.name}} 
+                              </option>                          
+                  </select>
             </label>              
              
-            <label class="item item-input item-select item-positive ">
-                  <div class="input-label" style="font-size:20px; line-height: normal;">
+            <label class="item item-input item-select ">
+                  <div class="input-label">
                       Color
                   </div>
-                      <select ng-model="mySelect" ng-change="showSelectValue(mySelect)">
+                      <select 
+                      ng-model="mySelect" 
+                      ng-change="showSelectValue(mySelect)"
+                      style="font-size:20px; line-height: normal;">>
                           <option ng-repeat="color in colors" > {{color.name}} </option>                          
                       </select>
             </label>

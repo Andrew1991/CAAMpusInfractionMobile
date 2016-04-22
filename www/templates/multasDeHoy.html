@@ -5,7 +5,7 @@
             <div class="item item-divider" style="font-size:25px; line-height: normal;">Multas Locales (Sin Procesar)</div>
             <div class="item item-body">
                 <ion-list>
-                    <ion-item class="item-thumbnail-left item-icon-right" href={{"#/view_ticket/"+infraction.id}} ng-repeat="infraction in userInfraction">
+                    <ion-item class="item-thumbnail-left item-icon-right" href={{"#/view_ticket/"+infraction.infractionNumber}} ng-repeat="infraction in userInfraction">
                         <img src="img/icon-lg-guides-blue1-300x300.png"  ng-if="!infraction.isCancelled">
                         <img src="img/Delete.png" ng-if="infraction.isCancelled">
                          <i class="icon ion-ios-arrow-right"></i>
@@ -17,6 +17,6 @@
             </div>
         </div>
         <div class="spacer" style="height: 40px;"></div>
-        <a id="multaNueva55-button8" class="button button-balanced button-large button-block icon-left ion-checkmark-circled" ng-click="uploadInfractions()">Subir Multas</a>
+        <a id="multaNueva55-button8" class="button button-balanced button-large button-block icon-left ion-android-upload" ng-click="uploadInfractions()">Subir Multas</a>
     </ion-content>
 </ion-view>

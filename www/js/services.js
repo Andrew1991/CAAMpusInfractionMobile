@@ -1,6 +1,6 @@
-angular.module('app.services', ['ionic.utils'])
+angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
 
-.factory('DownloadAll', function($http, $localstorage, $q, $filter, $ionicHistory){
+.factory('DownloadAll', function($http, $localstorage, $localForage, $q, $filter, $ionicHistory){
 
 	var theFactory = {};
   var loadInfractions = [];
@@ -33,9 +33,10 @@ angular.module('app.services', ['ionic.utils'])
       method: 'GET',
       url: edmundsAPI
     }).success(function(data){
-     theFactory.vehicles = data.data;     
-     var vehicles = theFactory.vehicles;     
-     $localstorage.setObject('edmundsAPI', {edmundsAPI});          
+     // console.log("edmunds: ", data);
+     theFactory.e = data.makes;     
+     var edmundAPI = theFactory.e;     
+     $localstorage.setObject('edmundsAPI', {edmundAPI});          
    });
   }
 
@@ -84,7 +85,7 @@ angular.module('app.services', ['ionic.utils'])
   })
   .error(function(data, status, headers, config) {
       // handle error things
-      console.log(status);
+      console.log(data);
   })
   }
 
@@ -100,35 +101,19 @@ angular.module('app.services', ['ionic.utils'])
   })
   .error(function(data, status, headers, config) {
       // handle error things
-      console.log(status);
+      console.log(data);
   })
   }
 
-
-
-  // theFactory.download = function() {
-  //   return $http({
-  //     method: 'GET',
-  //     url: "http://cercapr.cloudapp.net/PHP/test6.php"
-  //   }).success(function(data){
-  //    theFactory.vehicles = data.vehicles;
-  //    theFactory.users = data.users;
-  //    theFactory.zones = data.zones;
-  //    var vehicles = theFactory.vehicles;
-  //    var users = theFactory.users;
-  //    var zones = theFactory.zones
-  //    $localstorage.setObject('vehicles', {vehicles});            
-  //    $localstorage.setObject('users', {users});
-  //    $localstorage.setObject('zones', {zones});   
-  //  });
-  // }
 //restores all infractions that have been not been upploaded into the server
 theFactory.dailyInfractions = function(){
-  var infractions = $localstorage.getObject('Infractions')
-  for(var i=0; i < infractions.loadInfractions.length; i++)
-  {
-   loadInfractions.push(infractions.loadInfractions[i]);
- }
+   $localForage.getItem('Infractions').then(function(data){ 
+     for(var i=0; i < data.loadInfractions.length; i++){
+        loadInfractions.push(data.loadInfractions[i]);
+        console.log("Loaded Daily INfractions")
+     }   
+        
+      })
 }
 theFactory.dailyUnregisteredVechiles = function(){
   var vehicles = $localstorage.getObject('UnregisteredVehicle');
@@ -141,7 +126,8 @@ theFactory.dailyUnregisteredVechiles = function(){
 theFactory.addInfraction = function(infraction){
  // console.log("Service recived the following infraction: ", infraction);
   loadInfractions.push(infraction); 
-  $localstorage.setObject('Infractions',{loadInfractions});
+  console.log("loadInfractions size: ", loadInfractions.length)
+  $localForage.setItem('Infractions',{loadInfractions});
 
 }
 
@@ -154,16 +140,14 @@ theFactory.addUnregisteredVehicle = function(vehicle){
 //adds a new infraction that was recently edited
 theFactory.addEditedInfraction = function(infraction){
 
-  //console.log("Service recived the following infraction: ", infraction);
-  loadInfractions.push(infraction);
-  console.log("pushing infraction: ", loadInfractions);
-  console.log("Total infractions :", loadInfractions.length);
-  $localstorage.setObject('Infractions',{loadInfractions});
-
+  console.log("Service recived the following infraction: ", infraction);
+  loadInfractions.push(infraction);   
+  $localForage.setItem('Infractions',{loadInfractions});
+  
 }
 //clears all infractions
 theFactory.clearInfractions = function(){
-  holdInfractions = loadInfractions;
+  
   loadInfractions=[];
 }
 //logs in a new user
@@ -203,7 +187,6 @@ theFactory.logout = function(){
   response = "";
   $ionicHistory.clearCache();
 }
-
 
 return theFactory;
 

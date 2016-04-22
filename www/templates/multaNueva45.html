@@ -20,9 +20,9 @@
                   </div>  
              <p style="font-size:20px; line-height: normal;">Cantidad de fotos tomadas: <B>{{images.length}}</B></p>        
         <ion-slide-box auto-play="true" does-continue = "true" slide-interval="2000">
-             <ion-slide ng-repeat="image in images">
+             <ion-slide ng-repeat="imag in images">
                 
-                        <img ng-src="{{image}}" style="max-width:100%;max-height:100%,width:300px;height:300px;margin:auto;display:block" class="rotate90">
+                        <img style="max-width:100%;max-height:100%,width:300px;height:300px;margin:auto;display:block" data-ng-src="data:image/png;base64,{{imag}}" >
                  
               </ion-slide>
         </ion-slide-box> 

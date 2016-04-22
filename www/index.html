@@ -9,7 +9,7 @@
         margin: 0;
         padding: 0;
     }
-        .rotate90 {
+.rotate90 {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
     -o-transform: rotate(90deg);
@@ -24,6 +24,16 @@
 .larger {
     font-size: 1px;
 }
+.item-select select,  .item-select select option{
+  left: 25%;
+   width: 75%;
+   font-size: 25px;
+}
+.item-select select { 
+  font-size: 25px;
+}
+
+
     </style>
   <head>
     <meta charset="utf-8">
@@ -33,9 +43,11 @@
     <link rel="stylesheet" href="lib/ionic/css/ionic.css" >
     
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-
+    <script src="lib/angular-base64/angular-base64.js"></script>
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
+    <script src="lib/localforage/dist/localforage.js"></script>
+    <script src="lib/angular-localforage/dist/angular-localForage.js"></script>
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
