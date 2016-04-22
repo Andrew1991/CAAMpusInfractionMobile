@@ -29,10 +29,12 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router', 'bas
 
 })
    //(1/5) Search for vehicle controller
-   .controller('multaNueva14Ctrl', function($state, $scope, $localstorage, $rootScope, $ionicHistory, $ionicPlatform, DownloadAll) {
+   .controller('multaNueva14Ctrl', function($state, $ionicHistory, $scope, $localstorage, $rootScope, $ionicHistory, $ionicPlatform, DownloadAll) {
    	$scope.vehicle = {};
 	//searches for vechicle using licence plate number
-
+	$ionicHistory.clearHistory();
+	$ionicHistory.clearCache();
+	$state.go('multaNueva14', {}, {reload: true}); 
 	$scope.findVehicle = function() {
 		var check = $scope.vehicle.plate_number;
 		var secondCheck = false;
@@ -721,8 +723,6 @@ angular.module('app.controllers', ['ionic.utils', 'ngCordova', 'ui.router', 'bas
 		 }	 
 		}, 100);
 })
-
-
 
  .controller('informaciNDeUsuarioCtrl', function($scope) {
 
