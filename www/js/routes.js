@@ -6,18 +6,14 @@ angular.module('app.routes', [])
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-  $stateProvider
-    
-  
-
-  
+  $stateProvider  
       
     .state('cAAMpusInfraction', {
       url: '/side-menu',
       abstract:true,
-      templateUrl: 'templates/cAAMpusInfraction.html'
-    })
-      
+      templateUrl: 'templates/cAAMpusInfraction.html',
+      controller: 'cAAMpusInfractionCtrl'
+    })     
     
       
         
@@ -25,9 +21,7 @@ angular.module('app.routes', [])
       url: '/login',
       templateUrl: 'templates/logIn.html',
       controller: 'logInCtrl'
-    })
-        
-      
+    })           
     
       
         
@@ -47,19 +41,7 @@ angular.module('app.routes', [])
           controller: 'multasDeHoyCtrl',
         }
       }
-    })
-        
-      
-    
-      
-        
-    .state('multaNueva24', {
-      url: '/new_ticket2',
-      templateUrl: 'templates/multaNueva24.html'
-    })
-        
-      
-    
+    })    
       
         
     .state('multaNueva35', {
@@ -67,8 +49,6 @@ angular.module('app.routes', [])
       templateUrl: 'templates/multaNueva35.html',
       controller: 'multaNueva35Ctrl'
     })
-        
-      
     
       
         
@@ -82,10 +62,7 @@ angular.module('app.routes', [])
       url: '/new_vehicle',
       templateUrl: 'templates/newVehicle.html',
       controller: 'newVehicleCtrl'
-    })
-        
-      
-    
+    })    
       
         
     .state('informaciNDeMulta', {
@@ -131,29 +108,9 @@ angular.module('app.routes', [])
       templateUrl: 'templates/multaNueva25.html',
        controller: 'multaNueva25Ctrl'
     })
+  
         
-      
-    
-      
-        
-    .state('cAAMpusInfraction.informaciNDeUsuario', {
-      url: '/user_info',
-      views: {
-        'side-menu21': {
-          templateUrl: 'templates/informaciNDeUsuario.html'
-        }
-      }
-    })
-        
-      
-    
-      
-        
-    .state('editarMulta', {
-      url: '/edit_ticket',
-      templateUrl: 'templates/editarMulta.html'
-    })
-        
+       
       
     ;
 

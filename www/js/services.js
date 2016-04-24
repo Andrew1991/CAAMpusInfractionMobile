@@ -139,15 +139,16 @@ theFactory.addUnregisteredVehicle = function(vehicle){
 }
 //adds a new infraction that was recently edited
 theFactory.addEditedInfraction = function(infraction){
-
   console.log("Service recived the following infraction: ", infraction);
-  loadInfractions.push(infraction);   
+ 
+  for(var i =0 ; i<infraction.length;i++){
+     loadInfractions.push(infraction[i]);
+  }   
   $localForage.setItem('Infractions',{loadInfractions});
   
 }
 //clears all infractions
-theFactory.clearInfractions = function(){
-  
+theFactory.clearInfractions = function(){  
   loadInfractions=[];
 }
 //logs in a new user
