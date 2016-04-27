@@ -21,6 +21,7 @@
                         capitalize style="font-size:20px; line-height: normal;"> 
                           {{vehicle.licencePlateID}}
             </label>
+            <div ng-show= "showMake">
             <label 
                   class="item item-input item-select"
                   name="Marca">
@@ -38,6 +39,9 @@
                           </option>                          
                </select>
             </label>
+            </div>
+
+            <div ng-show= "showModel">
             <label 
                       class="item item-input item-select "
                       name="Modelo">
@@ -54,7 +58,41 @@
                                         {{model.name}} 
                               </option>                          
                   </select>
-            </label>              
+            </label>  
+            </div> 
+            <div ng-show= "showMakeOtro" class="spacer" style="height: 40px;"></div>
+            <div ng-show= "showMakeOtro">
+            <label 
+                   class="item item-input" 
+                   name="licence_plate">
+                  <span 
+                      class="input-label">
+                        Marca: 
+                  </span>
+                  <input 
+                         id="foo" 
+                        type="text"  
+                        ng-model="vehicle.make" 
+                        capitalize> 
+                          
+            </label>
+            </div>
+            <div ng-show= "showModelOtro">
+            <label 
+                   class="item item-input" 
+                   name="licence_plate">
+                  <span 
+                      class="input-label">
+                        Modelo: 
+                  </span>
+                  <input 
+                         id="foo" 
+                        type="text"  
+                        ng-model="vehicle.model" 
+                        capitalize> 
+                          
+            </label> 
+            </div>          
              
             <label class="item item-input item-select ">
                   <div class="input-label">

@@ -1,9 +1,7 @@
 List of things to do:
-
-
-4. In step (4/5) the user must be able to delete the picture taken
-
-
-7. zones must fillter out by GPS coordinates
-8. sort multas de hoy, and only show infractions taken by person logged in
- 
+1. Drop down de otros en creacion de carros
+2. sabado si es otro sabado - done
+3. add fee ammount  en views - done
+4. add fecha de citacion en views - done
+5. fix clear cache en create infraction
+6. add popups no internet/wifi

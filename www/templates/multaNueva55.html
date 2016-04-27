@@ -17,6 +17,10 @@
                  <h2 style="font-size:20px; line-height: normal;"><B>{{vehicle.make}} {{vehicle.model}}</B> </h2>
                 <p style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{vehicle.licensePlateID}}</p>
                 <p style="font-size:20px; line-height: normal;"><B>Numero de Permiso:</B> {{vehicle.permiso}}</p>
+                 <p style="font-size:20px; line-height: normal;"><B>Cantidad Multa:</B> {{cantidadMonetaria}}</p>
+                 <p style="font-size:20px; line-height: normal;"><B>Citation Date:</B> {{citation}}</p>
+
+                 
             </ion-item>
             <ion-item class="item-divider" style="font-size:20px; line-height: normal;"><B>Zona:</B></ion-item>            
              <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;">{{selectedZone}}</ion-item>
@@ -28,8 +32,8 @@
             <ion-item class="item-divider " style="font-size:20px; line-height: normal;">Infraccion:</ion-item>
             <ion-item class="item-text-wrap icon-left ion-ios-checkmark-empty"ng-repeat="infraction in infrac" style="font-size:20px; line-height: normal;"> {{infraction.description}} </ion-item>
             <div class="spacer" style="height: 40px;"></div>
-            <ion-item class="item-divider " style="font-size:20px; line-height: normal;">Commentarios:</ion-item>
-         <ion-item  style="font-size:20px; line-height: normal;"> {{mainComment}} </ion-item>
+            <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Commentarios:</ion-item>
+         <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;"> {{mainComment}} </ion-item>
         </ion-list>
 
         <div class="spacer" style="height: 40px;"></div>

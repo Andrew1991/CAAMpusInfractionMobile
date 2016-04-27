@@ -1,6 +1,6 @@
 angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
 
-.factory('DownloadAll', function($http, $localstorage, $localForage, $q, $filter, $ionicHistory){
+.factory('DownloadAll', function($http, $exceptionHandler, $localstorage, $localForage, $q, $filter, $ionicHistory){
 
 	var theFactory = {};
   var loadInfractions = [];
@@ -55,12 +55,15 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
     return $http({
       method: 'GET',
       url: usersAPI
-    }).success(function(data){
-     theFactory.users = data.data;     
-     var users = theFactory.users;     
-     $localstorage.setObject('users', {users});          
-   });
-  }
+    }).success(function(data, status){
+         theFactory.users = data.data;     
+         var users = theFactory.users;     
+         $localstorage.setObject('users', {users}); 
+         console.log(status) ;         
+   }).error(function(data,status){                
+      console.log(data, status) ;
+  })
+}
 
    theFactory.DownloadViolations = function() {
     return $http({
@@ -74,36 +77,52 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
   }
 
   theFactory.UploadInfractions = function(infractions) {
-     return $http({
-      method: 'POST',
-      url: infractionUploadAPI,
-      data: infractions     
-  })
-  .success(function(data) {
-      // handle success things
-      console.log(data);
-  })
-  .error(function(data, status, headers, config) {
-      // handle error things
-      console.log(data);
-  })
+     var df = $q.defer();
+    $http.post(infractionUploadAPI, infractions)
+      .success(function(data){
+            console.log("Success. Infraction created.");            
+            df.resolve(data);
+    })
+      .error(function(err, status) {
+            df.reject(err);
+            console.log("upload infraction status: ", status);
+    });
+    return df.promise;
   }
 
-  theFactory.UploadVehicles = function(vehicles) {
-     return $http({
-      method: 'POST',
-      url: vehiclesAPI,
-      data: vehicles     
-  })
-  .success(function(data) {
-      // handle success things
-      console.log(data);
-  })
-  .error(function(data, status, headers, config) {
-      // handle error things
-      console.log(data);
-  })
+  theFactory.internetCheck = function(infractions){
+    var df = $q.defer();
+     $http({
+      method: 'GET',
+      url: zonesAPI
+    }).success(function(data, status){
+      //console.log("service network",status)
+      df.resolve(status);
+
+    }).error(function(err, status) {
+            df.reject(status);
+            console.log("service network ", status);
+
+    });
+     return df.promise;
   }
+
+
+  theFactory.UploadVehicles = function(vehicles) {
+     
+    var df = $q.defer();
+    $http.post(vehiclesAPI, vehicles)
+        .success(function(data){
+                console.log("Success. Vehicle created.");
+                df.resolve(data);
+        })
+        .error(function(err){
+                df.reject(err.message);
+                console.log(err.message)     
+        });
+    return df.promise;
+  };
+  
 
 //restores all infractions that have been not been upploaded into the server
 theFactory.dailyInfractions = function(){
@@ -119,7 +138,7 @@ theFactory.dailyUnregisteredVechiles = function(){
   var vehicles = $localstorage.getObject('UnregisteredVehicle');
   for(var i=0; i < vehicles.loadVehicle.length; i++)
   {
-   loadInfractions.push(vehicles.loadVehicle[i]);
+   loadVehicle.push(vehicles.loadVehicle[i]);
  }
 }
 //adds a new infraction into our local database to await to be uploaded
@@ -198,11 +217,3 @@ return theFactory;
 .service('BlankService', [function(){
 
 }]);
-
-	// Vehicles.licence_plate = data.LicencePlate;
-            // Vehicles.marca = data.Marca;
-            // Vehicles.model = data.Model;
-            // Vehicles.color = data.Color;
-            // Vehicles.vin = data.Vin;
-
-//php --info | grep error

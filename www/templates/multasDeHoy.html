@@ -10,13 +10,15 @@
                         <img src="img/Delete.png" ng-if="infraction.isCancelled">
                          <i class="icon ion-ios-arrow-right"></i>
                         <h2 style="font-size:20px; line-height: normal;">{{infraction.vehicle.make}} {{infraction.vehicle.model}}</h2>
-                        <p  style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.licensePlateID}}     <B>Hora:</B> {{ infraction.createTime | date:'HH:mm:ss'}}</p>
+                        <p  style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.licensePlateID}}     <B>Fecha/Hora:</B> {{ infraction.createTime | date:'HH:mm:ss'}}</p>
                              
                     </ion-item>
                 </ion-list>
             </div>
         </div>
         <div class="spacer" style="height: 40px;"></div>
+         <div ng-show= "show">
         <a id="multaNueva55-button8" class="button button-balanced button-large button-block icon-left ion-android-upload" ng-click="uploadInfractions()">Subir Multas</a>
+        </div>
     </ion-content>
 </ion-view>

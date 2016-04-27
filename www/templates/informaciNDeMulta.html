@@ -16,14 +16,16 @@
         <ion-list>
                       
                <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;"> Zona: </B> {{infraction.zone}}</ion-item>          
-               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Fecha:</B> {{infraction.createTime | date:'yyyy-MM-dd'}} <B>Hora:</B> {{infraction.createTime | date:'HH:mm:ss'}} </ion-item>
+               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Fecha/Hora:</B> {{infraction.createTime | date:'yyyy-MM-dd'}} </ion-item>
+               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Cantidad Multa:</B> {{infraction.feeAmount}} </ion-item>
+               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Citation Date:</B> {{infraction.citationDate}} </ion-item>
             
            
             <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Infracciones:</ion-item>
-            <ion-item ng-repeat="violation in infraction.violations_name" class = "icon-left ion-ios-checkmark-empty" style="font-size:20px; line-height: normal;"> {{violation.description}} </ion-item>
+            <ion-item class="item-text-wrap" ng-repeat="violation in infraction.violations_name" class = "icon-left ion-ios-checkmark-empty" style="font-size:20px; line-height: normal;"> {{violation.description}} </ion-item>
 
              <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Commentarios:</ion-item>
-            <ion-item  style="font-size:20px; line-height: normal;"> {{infraction.mainComment}} </ion-item>
+            <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;"> {{infraction.mainComment}} </ion-item>
              <div class="spacer" style="height: 40px;"></div>
              <p style="font-size:20px; line-height: normal;">Cantidad de fotos tomadas: <B>{{infraction.images.length}}</B></p>
         </ion-list>
@@ -42,7 +44,7 @@
 
         <div ng-show= "deleteComment">
          <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Comentario de Cancelacion:</ion-item>
-            <ion-item  style="font-size:20px; line-height: normal;"> {{infraction.deleteComment}} </ion-item>
+            <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;"> {{infraction.cancellationComment}} </ion-item>
             </div>
        
     </ion-content>
