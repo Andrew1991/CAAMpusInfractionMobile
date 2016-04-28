@@ -8,6 +8,9 @@
                  <h2 style="font-size:20px; line-height: normal;"><B>Numero de Boleto: {{infraction.infractionNumber}}</B></h2>
                 <h2 style="font-size:20px; line-height: normal;"><B>{{infraction.vehicle.make}} {{infraction.vehicle.model}}</B></h2>
                 <p style="font-size:20px; line-height: normal;"><B>Tablilla:</B> {{infraction.vehicle.licensePlateID}}</p>
+                <p style="font-size:20px; line-height: normal;"><B>Numero de Permiso:</B> {{infraction.vehicle.parkingPermitType}}{{infraction.vehicle.parkingPermit}}</p>
+                <p style="font-size:20px; line-height: normal;"><B>Cantidad Multa: </B>${{infraction.feeAmount}}</p>
+                 <p style="font-size:20px; line-height: normal;"><B>Citation Date:</B> {{date  | date:'yyyy-MM-dd'}}</p>
                 <div ng-show="deleteMessage">
                 <p style="font-size:25px; line-height: normal; color:red"><B>Multa Cancelada</B> </p>
                 </div>
@@ -15,14 +18,13 @@
         </ion-list>
         <ion-list>
                       
-               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;"> Zona: </B> {{infraction.zone}}</ion-item>          
-               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Fecha/Hora:</B> {{infraction.createTime | date:'yyyy-MM-dd'}} </ion-item>
-               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Cantidad Multa:</B> {{infraction.feeAmount}} </ion-item>
-               <ion-item class="item-text-wrap"> <B style="font-size:20px; line-height: normal;">Citation Date:</B> {{infraction.citationDate}} </ion-item>
+               <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;"><B> Zona: </B> {{infraction.zone}}</ion-item>          
+               <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;"><B>Fecha: </B>{{date2 | date:'yyyy-MM-dd'}} <B>Hora:</B> {{date2 | date:'HH:mm:ss'}}</ion-item>      
+             
             
            
             <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Infracciones:</ion-item>
-            <ion-item class="item-text-wrap" ng-repeat="violation in infraction.violations_name" class = "icon-left ion-ios-checkmark-empty" style="font-size:20px; line-height: normal;"> {{violation.description}} </ion-item>
+            <ion-item class="item-text-wrap" ng-repeat="violation in infraction.violations_name" class ="icon-left ion-ios-checkmark-empty" style="font-size:20px; line-height: normal;"> {{violation.description}} </ion-item>
 
              <ion-item class="item-divider" style="font-size:20px; line-height: normal;">Commentarios:</ion-item>
             <ion-item class="item-text-wrap" style="font-size:20px; line-height: normal;"> {{infraction.mainComment}} </ion-item>

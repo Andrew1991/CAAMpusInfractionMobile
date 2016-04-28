@@ -30,9 +30,11 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 
 })
    //(1/5) Search for vehicle controller
-   .controller('multaNueva14Ctrl', function($state, $ionicHistory, $scope, $localstorage, $rootScope, $ionicHistory, $ionicPlatform, DownloadAll) {
+   .controller('multaNueva14Ctrl', function($state, $ionicHistory, $scope, $localstorage,
+    $rootScope, $ionicHistory, $ionicPlatform, DownloadAll) {
    	$scope.vehicle = {};
 	//searches for vechicle using licence plate number
+	$rootScope.incorrectInformationComment = null
 	$ionicHistory.clearHistory();
 	$ionicHistory.clearCache();
 		$scope.infractionCancel = function(){
@@ -57,7 +59,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		var check = $scope.vehicle.plate_number;
 		var secondCheck = false;
 		if(!check){
-			alert("Entre una tablilla!");
+			alert("Entre una tablilla valida!");
 		}
 		else {
 			var plate_number = $scope.vehicle.plate_number;
@@ -96,7 +98,8 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 })
 
    //(1.1/5) Regsiter a new vehicle view controller
- .controller('newVehicleCtrl', function($scope, $state, $ionicPlatform, $ionicHistory, $rootScope, DownloadAll, $localstorage, $filter) {
+ .controller('newVehicleCtrl', function($scope, $state, $ionicPlatform, $ionicHistory,
+  $rootScope, DownloadAll, $localstorage, $filter) {
  	$scope.date = new Date();
  	$scope.user = DownloadAll.currentUser();
  	console.log("user: ", $scope.user._id);
@@ -106,7 +109,8 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
  		model: "",
  		color: "",
  		creatorID: $scope.user._id,
- 		createTime: $scope.date
+ 		createTime: $scope.date,
+ 		isRegistered: 0
  	};
  	$scope.infractionCancel = function(){
 		$ionicHistory.nextViewOptions({
@@ -136,7 +140,8 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 				$rootScope.bool = true;
 				$rootScope.clampWarn = false;
 				$rootScope.createdVehicle = "";
-				$rootScope.create = false;				
+				$rootScope.create = false;	
+
 				$scope.IncorrectInfoButton = $rootScope.bool;
 				$scope.reportedMessage = !$rootScope.bool; 
 		   		if($state.current.name=="multaNueva25"){
@@ -262,7 +267,9 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 
  })
    //(2/5) view vehicle information view
-   .controller('multaNueva25Ctrl', function($scope, $ionicPlatform, $rootScope, $localstorage, $ionicPlatform, $rootScope, $ionicModal, $ionicHistory, $state, $ionicPopup) {
+   .controller('multaNueva25Ctrl', function($scope, $ionicPlatform, 
+   	$rootScope, $localstorage, $ionicPlatform, $rootScope, $ionicModal,
+   	 $ionicHistory, $state, $ionicPopup) {
 	 
 	$scope.IncorrectInfoButton = $rootScope.bool;
 	$scope.reportedMessage = !$rootScope.bool; 
@@ -277,6 +284,12 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		$rootScope.clampWarn = true;
 		$scope.clampWarning = $rootScope.clampWarn;
 		
+	}
+	if($scope.vehicle.perkingPermitProv == 1){
+		$scope.prov = "Prov"
+	}
+	else{
+		$scope.prov = ""
 	}
 	$ionicModal.fromTemplateUrl('templates/informacionIncorrecta.html', {
 	scope: $scope
@@ -295,6 +308,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		$rootScope.bool = true;
 		$rootScope.clampWarn = false;
 		$rootScope.createdVehicle = "";
+		$rootScope.incorrectInformationComment = null
 		$rootScope.create = false;
 		$ionicHistory.clearCache();
 		$ionicHistory.clearHistory();
@@ -351,7 +365,8 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 
 	})
 //   (3/5) choose infractions view controller
-.controller('multaNueva35Ctrl', function($scope, $rootScope, $ionicHistory, $state, $localstorage, $ionicPlatform) {	
+.controller('multaNueva35Ctrl', function($scope, $rootScope, $ionicHistory, $state,
+ $localstorage, $ionicPlatform, $filter) {	
 	$rootScope.infractions = [];
 	$scope.clampWarning = $rootScope.clampWarn;
 	$scope.hold = $localstorage.getObject('typeInfractions');
@@ -361,6 +376,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 	$scope.selected = [];
 	$scope.id_selected=[];
 	$scope.fee=[];
+	$scope.langosta = [];
 
 	$scope.infractionCancel = function(){
 		$ionicHistory.nextViewOptions({
@@ -374,6 +390,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		$rootScope.bool = true;
 		$rootScope.clampWarn = false;
 		$rootScope.createdVehicle = "";
+		$rootScope.incorrectInformationComment = null
 		$rootScope.create = false;
 		$ionicHistory.clearCache();
 		$ionicHistory.clearHistory();
@@ -391,22 +408,31 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		   	}, 100);
     //function to select type of violations
     $scope.checkedOrNot = function (asset, isChecked, index) {
-    	if (isChecked) {        	
-    		$scope.selected.push(asset);
-    		$scope.id_selected.push(asset._id);
-    		$scope.fee.push(asset.fee);
-    		console.log("selected Infraction ID: ", $scope.fee.max());
+    	if (isChecked) { 
+    		if(asset.securityOfficeCode == 631){
+    			$scope.selected.push(asset);
+    			$scope.id_selected.push(asset._id);
+    		}  
+    		else{
+    			$scope.selected.push(asset);
+	    		$scope.id_selected.push(asset._id);
+	    		$scope.fee.push(asset.fee);
+    		}     	
+    		
+    		
+    		
     	} else {
     		var _index = $scope.selected.indexOf(asset);
     		$scope.selected.splice(_index, 1);
     		$scope.id_selected.splice(_index, 1);;
-    		$scope.fee.splice(_index, 1);;
-            console.log("selected after remove: ", $scope.fee.max());
+    		$scope.fee.splice(_index, 1);    		
+            console.log("selected after remove: ", _index);
         } 
         $rootScope.infractions = $scope.selected;
         $rootScope.id_violations = $scope.id_selected;
         $rootScope.fee = $scope.fee.max();
-   		console.log("Options inide rootScope: ", $rootScope.infractions);
+        var tester = $filter('filter')($rootScope.infractions, {securityOfficeCode: '631'});
+   		console.log("Options inide rootScope: ", tester.length);
    	};
     //Function to go to next view
     $scope.nextView = function()
@@ -426,7 +452,9 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
    
 })
 // (4/5) take picture and choose zones view controller
-.controller('multaNueva45Ctrl', function($ionicHistory, $cordovaGeolocation, $base64, $state, $scope, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $rootScope, $localstorage, $ionicPlatform) {
+.controller('multaNueva45Ctrl', function($ionicHistory, $cordovaGeolocation, $base64, $state,
+ $scope, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $rootScope, 
+ $localstorage, $ionicPlatform) {
    var posOptions = {timeout: 10000, enableHighAccuracy: false};
    $cordovaGeolocation.getCurrentPosition(posOptions)	
 		   .then(function (position) {
@@ -456,6 +484,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		$rootScope.clampWarn = false;
 		$rootScope.createdVehicle = "";
 		$rootScope.create = false;
+		$rootScope.incorrectInformationComment = null
 		$ionicHistory.clearCache();
 		$ionicHistory.clearHistory();
 		$state.go('cAAMpusInfraction.cAAMpusInfraction2', {}, {reload: true});
@@ -524,7 +553,8 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 
 })
 //(5/5) View Infraction Summary
-.controller('multaNueva55Ctrl', function($state, $scope, $ionicHistory, $localstorage, $rootScope, $ionicSlideBoxDelegate, DownloadAll, $ionicPlatform) {
+.controller('multaNueva55Ctrl', function($state, $scope, $filter, $ionicHistory, $localstorage,
+ $rootScope, $ionicSlideBoxDelegate, DownloadAll, $ionicPlatform) {
 	$scope.selectedZone = $rootScope.selectedZone;
 	$scope.holdVehicles = $localstorage.getObject('vehicles');
 	$scope.vehicle = {};
@@ -539,6 +569,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 	}	
 	$scope.cantidadMonetaria = $rootScope.fee
 	$scope.infrac = $rootScope.infractions;
+	var langosta = $filter('filter')($rootScope.infractions, {securityOfficeCode: '631'});
 	$scope.id_violations = $rootScope.id_violations;
 	$scope.images = $rootScope.images;
 	$scope.image = $rootScope.image;
@@ -574,7 +605,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		    this.setDate(this.getDate() + parseInt(days));
 		    return this;
 		};
-	$scope.date = new Date()
+	$scope.fecha = new Date()
 	var d = new Date();
 	var dd = new Date();
 	if(dd.getDay() == 1 || dd.getDay() > 2 && dd.getDay() < 7){
@@ -604,17 +635,22 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
                   [ dd.getHours().padLeft(),
                     dd.getMinutes().padLeft(),
                     dd.getSeconds().padLeft()].join(':');
-      $scope.citation = citationDate;
+      $scope.citation =  new Date(citationDate);
      console.log("citation day: ", citationDate);
      console.log("created time : ", createTime);
-
+     var fee = $rootScope.fee
+     if(langosta.length==1){
+     		fee = fee + 50
+     		console.log(fee);
+     }
+     $scope.fees = fee;
 	var infraction = {
 		infractionNumber: $scope._id,
 		officerID: $scope.officer._id,		
 		vehicle: $scope.vehicle,
 		infractionStatusID: 6,
 		zoneID: ZoneID, 
-		feeAmount: $rootScope.fee,
+		feeAmount: fee,
 		licensePlateID: $scope.vehicle.licensePlateID,
 		highestViolation:highestViolation,
 		isCancelled: false,
@@ -669,6 +705,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 			var car = $rootScope.createdVehicle;
 			DownloadAll.addUnregisteredVehicle(car);
 			car = "";
+		    $rootScope.incorrectInformationComment = null
 			$rootScope.createdVehicle = "";
 			$rootScope.create = false;
 		}
@@ -681,17 +718,20 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 })
 
    //view todays infractions controller
-   .controller('multasDeHoyCtrl', function($scope, $cordovaNetwork, $ionicLoading, $localstorage, $state, $ionicPlatform, $ionicHistory, DownloadAll, $ionicPopup, $localForage) {
+   .controller('multasDeHoyCtrl', function($scope, $cordovaNetwork, $ionicLoading, 
+   	$localstorage, $state, $ionicPlatform, $timeout, $ionicHistory, DownloadAll, 
+   	$ionicPopup, $localForage) {
    	   
    	var vehicles = $localstorage.getObject('UnregisteredVehicle').loadVehicle;
     $scope.userInfraction = [];
     $localForage.getItem('Infractions').then(function(data){  
-     
+    $scope.show = false;
 		   
 		   	if(data === null){	
 		   		$scope.show = false;	   		
-		   		$ionicPopup.alert({title: '0 multas',
-		   							template: 'Usted no a dado multas en el dia de hoy'});
+		   		$ionicPopup.alert({title: '0 Multas Para Procesar',
+		   							template: 'No hay multas para procesar'});
+
 		   	}
 		   	else{
 		   			$scope.infractions = data.loadInfractions;
@@ -710,8 +750,8 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		   	}
 		   	$state.go('cAAMpusInfraction.multasDeHoy')
 		   	if($scope.userInfraction.length == 0){
-		   		$ionicPopup.alert({title: '0 multas',
-		   							template: 'Usted no a dado multas en el dia de hoy'});
+		   		$ionicPopup.alert({title: '0 Multas Para Procesar',
+		   							template: 'No hay multas sin procesar'});
 		   	}
 		   }
 		   	
@@ -735,67 +775,85 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
   	hide = function(){
    			 $ionicLoading.hide();
  		 };
-	
+	var tempInfractions = []
    	$scope.uploadInfractions = function(){
-   			// if($cordovaNetwork.getNetwork()){
-   			// 	console.log($cordovaNetwork.getNetwork())
-   			// }
-   			// if($cordovaNetwork.isOffline()){
-   			// 	console.log("offline")
-   			// }
-   			// DownloadAll.internetCheck()
-   			// .then(function(e) {
-   			// 	console.log("Internet Available: ",  e);
-   			// }, function(e){
-   			// 	console.log("no network: ", e);
-   			// })
-   			
-   		  
-   			var tempInfractions = []; 	   	  			
-		   	for(var i =0; i<$scope.infractions.length; i++) {
-		   			var inf = $scope.infractions[i];
-					if ($scope.infractions[i].vehicleFound == -1) {	
-						DownloadAll.internetCheck()
-			   			.then(function(e) {
-			   				console.log("Internet Available: ",  e);
-			   				return DownloadAll.UploadVehicles(JSON.stringify($scope.infractions[i].vehicle));
-			   			}, function(e){
-			   				console.log("No Internet Available ", e);
-			   				console.log("Failed infraction: " + i);
-			   			})
-						.then(function() {							
-							return DownloadAll.UploadInfractions(JSON.stringify(inf));
-						}, function(reason){
-							//console.log("Could not upload Vehicle", reason);
-							tempInfractions.push(inf)							
-						})
-						.then(function() {
-							//console.log("infraction uploaded succesfully", inf);
-						}, function(reason){
-							//console.log("Could not create infraction", reason);
-							tempInfractions.push(inf)								
-						});
-					}
-					else {
-			   			DownloadAll.internetCheck()
-			   			.then(function(e) {
-			   				console.log("Internet Available: ",  e);
-			   				return DownloadAll.UploadInfractions(JSON.stringify(inf));
-			   			}, function(e){
-			   				console.log("No Internet Available ", e);
-			   				console.log("Failed infraction: " + i);
-			   			})
-						.then(function() {
-							//console.log("infraction uploaded succesfully");
-						}, function(reason){
-							//console.log("Could not create infraction", reason);
-							tempInfractions.push(inf)
-						});
-					}
-				}
+             $ionicHistory.clearCache()
+             $ionicHistory.clearHistory()
+   			 if($cordovaNetwork.isOnline()){
+   			 	$ionicLoading.show({
+						      template: '<ion-spinner  class="spinner-energized" icon="spiral"></ion-spinner>  		<style> .spinner svg {width: 60px;  height: 60px; }    </style>			  '
+						    	});
+   			    tempInfractions = []; 
+   			 	var internet = true;
+   			 	var noInternet = true
+   			 	DownloadAll.internetCheck()
+   			 		.then(function(e){
+   			 			for(var i=0; i<$scope.infractions.length; i++){
+   			 				var inf = $scope.infractions[i]
+   			 				if ($scope.infractions[i].vehicleFound == -1) {	
+   			 					DownloadAll.UploadVehicles(JSON.stringify(inf.vehicle))
+   			 						.then(function(e){
+   			 							return DownloadAll.UploadInfractions(JSON.stringify(inf));
+   			 						}, function(e){
+   			 							return DownloadAll.UploadInfractions(JSON.stringify(inf));
+   			 						})
+   			 				}
+   			 				else{
+   			 					DownloadAll.UploadInfractions(JSON.stringify(inf))
+   			 						.then(function(e){
+   			 							//succes uploaded infraction
+   			 							console.log("created infracdtion: ", e);
+   			 						}, function(e){
+   			 							//error no infraction uploaded
+   			 							console.log("error uploading infraction. Error message: ", e)
+   			 						})
+   			 				}
+   			 			}
+   			 		DownloadAll.DownloadVehicles().then(function(e){
+   			 			$localForage.clear(callAtTimeout(true, false))
+   			 		});
+   			 		
+
+   			 		}, function(e){
+   			 			console.log("No Internet")
+   			 			$ionicLoading.hide();
+   			 			callAtTimeout(false, true);
+   			 		})	  			
    		 
+   		}
+   		else{
+   			alert("Debe conectarse al Wifi")
+   		}
    	}
-   	
+   		function hide(){
+   			$ionicLoading.hide();
+   		}
+   		function callAtTimeout(success, fail) {
+			    	
+			   	    
+			   	    console.log(tempInfractions)
+			   	    $ionicHistory.nextViewOptions({
+						disableAnimate: true,
+						disableBack: true,
+						historyRoot: true
+					});	
+			   	    $ionicLoading.hide();
+					$ionicHistory.clearCache();
+					$ionicHistory.clearHistory();			   	   	
+			   	    DownloadAll.clearInfractions();
+			   	    DownloadAll.DownloadVehicles();
+			   	    if(tempInfractions.length != 0){
+			   	    	DownloadAll.addEditedInfraction(tempInfractions)
+			   	    }
+			   	    if(success){
+			   	    	alert("Multas subidas")
+			   	    }
+			   	    if(fail){
+			   	    	alert("Error. Algunas Multas no fueron procesadas. Trate de nuevo mas tarde")
+			   	    }
+			   	    
+			   	    $state.go('cAAMpusInfraction.cAAMpusInfraction2');
+		}
    	
    })
 
@@ -818,7 +876,8 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 	//$scope.holdInfractions = $localstorage.getObject('Infractions');
 	$scope.infractions = data.loadInfractions;	
 	$scope.infraction = $filter('filter')($scope.infractions, {infractionNumber:$stateParams.InfractionID})[0];
-	
+	$scope.date = new Date($scope.infraction.citationDate);
+	$scope.date2 = new Date($scope.infraction.createTime);
 	
 	
 	$scope.deleteButton = !$scope.infraction.isCancelled;
@@ -885,9 +944,9 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 	$scope.infractions = "";
 	$scope.infraction = "";
 	 $localForage.getItem('Infractions').then(function(data){
-	 		 $scope.infractions = "";
-				$scope.infraction = "";
-			 $scope.infractions = data.loadInfractions;
+	 		$scope.infractions = "";
+			$scope.infraction = "";
+			$scope.infractions = data.loadInfractions;
 			$scope.infraction = $filter('filter')($scope.infractions, {infractionNumber:$stateParams.InfractionID})[0];
 			$scope.hold = $localstorage.getObject('typeInfractions');
 			$scope.assets = $scope.hold.violations;	
@@ -895,10 +954,10 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 			$scope.selected = [];
 			$scope.IDselected = [];
 			$scope.name = [];
-			
+			$scope.fee = [];
 
 	 })
-	
+			var langostaFlag = false;
 			var infractions = [];
 			$ionicHistory.clearCache();
 			$ionicHistory.clearHistory();
@@ -906,28 +965,48 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 	$scope.hasViolation = function(violation) {
 		
 		if ($scope.infraction.violations.indexOf(violation._id) !== -1){
+			if(violation.securityOfficeCode == 631){
+					langostaFlag = true;
+					$scope.IDselected.push(violation._id);
+					$scope.selected.push(violation);
+					console.log("aqui", violation)
+			}
+			else{
+			
 			$scope.selected.push(violation);
-			
+			$scope.fee.push(violation.fee);
 			$scope.IDselected.push(violation._id);
-			
+			console.log($scope.selected)
+			}
 		}
 		return $scope.infraction.violations.indexOf(violation._id) !== -1;
 	};
 	$scope.checkedOrNot = function (asset, isChecked, index) {
 		if (isChecked) {
-			$scope.selected.push(asset);
-			$scope.IDselected.push(asset._id);
-			$scope.name.push(asset);
+			if(asset.securityOfficeCode == 631 ){
+				$scope.selected.push(asset);
+				$scope.IDselected.push(asset._id);
+				$scope.name.push(asset);
+			}
+			else{
+				$scope.selected.push(asset);
+				$scope.IDselected.push(asset._id);
+				$scope.name.push(asset);
+				$scope.fee.push(asset.fee);
+				console.log($scope.fee.max())
+			}
+			
+			
 			
 		} else {
 			var _index = $scope.selected.indexOf(asset);
 			$scope.selected.splice(_index, 1);
 			$scope.IDselected.splice(_index, 1);
 			$scope.name.splice(_index, 1);
-			
+			$scope.fee.splice(_index, 1);
 		}
 	};
-
+		
 	$scope.saveChanges = function(){
 		infractions = $scope.infractions
 		if($scope.selected.length == 0){
@@ -944,12 +1023,24 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 
 						infractions.splice(i,1);
 		             	//add new things to infraction
+		             	console.log("max fee", $scope.fee.max())
+		             	console.log($scope.selected);
+		             	var fee =  $scope.fee.max()
+		             	var langosta = $filter('filter')($scope.selected, {securityOfficeCode: '631'});
+		             						     
+					     if(langosta.length == 1){
+					     	console.log("sumando 50");
+					     	fee = fee + 50
+					     }
+					     console.log("info: ", langosta.length + " " + langostaFlag);
 		             	$scope.infraction.violations_name = $scope.selected;
 		             	$scope.infraction.violations =  $scope.IDselected;		             	
-		             	$scope.infraction.mainComment = $scope.infraction.mainComment;		             	
+		             	$scope.infraction.mainComment = $scope.infraction.mainComment;	
+		             	$scope.infraction.feeAmount = fee	             	
 		             	infractions.push($scope.infraction);		             	
 		      			DownloadAll.clearInfractions();               	
-		             	
+		             	langostaFlag = false
+		             	fee = ""
 		             	$scope.infraction = "";
 		             	$scope.IDselected = "";
 		             	$scope.selected = "";
@@ -964,6 +1055,9 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		         $state.go('cAAMpusInfraction.multasDeHoy', {}, {reload: true});	
 		     }
 		 };
+		Array.prototype.max = function() {
+		  	return Math.max.apply(null, this);
+		};
 		}) //35
 
 .controller('multaNueva24Ctrl', function($scope) {

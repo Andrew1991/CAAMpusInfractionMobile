@@ -23,7 +23,8 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
       url: vehiclesAPI
     }).success(function(data){
      theFactory.vehicles = data.data;     
-     var vehicles = theFactory.vehicles;     
+     var vehicles = theFactory.vehicles; 
+     console.log("downloaded vehicle")    
      $localstorage.setObject('vehicles', {vehicles});          
    });
   }
@@ -35,7 +36,8 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
     }).success(function(data){
      // console.log("edmunds: ", data);
      theFactory.e = data.makes;     
-     var edmundAPI = theFactory.e;     
+     var edmundAPI = theFactory.e; 
+     console.log("downloaded DownloadEdmunds")     
      $localstorage.setObject('edmundsAPI', {edmundAPI});          
    });
   }
@@ -46,7 +48,8 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
       url: zonesAPI
     }).success(function(data){
      theFactory.zones = data.data;     
-     var zones = theFactory.zones;     
+     var zones = theFactory.zones; 
+     console.log("downloaded zones")      
      $localstorage.setObject('zones', {zones});          
    });
   }
@@ -57,12 +60,11 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
       url: usersAPI
     }).success(function(data, status){
          theFactory.users = data.data;     
-         var users = theFactory.users;     
+         var users = theFactory.users;  
+         console.log("downloaded users")   
          $localstorage.setObject('users', {users}); 
-         console.log(status) ;         
-   }).error(function(data,status){                
-      console.log(data, status) ;
-  })
+                 
+   })
 }
 
    theFactory.DownloadViolations = function() {
@@ -71,7 +73,8 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
       url: violationsAPI
     }).success(function(data){
      theFactory.violations = data.data;     
-     var violations = theFactory.violations;     
+     var violations = theFactory.violations; 
+     console.log("downloaded infractions")    
      $localstorage.setObject('typeInfractions', {violations});          
    });
   }
