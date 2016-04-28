@@ -10,12 +10,12 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
   var users = "";
   var response = "";
  //links
-  var vehiclesAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/vehicles";
-  var zonesAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/zones";
-  var usersAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/users";
-  var violationsAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/violations";
+  var vehiclesAPI = "http://dev.uprm.edu/guardia/CAAMpusInfractionAPI/public/api/v1/vehicles";
+  var zonesAPI = "http://dev.uprm.edu/guardia/CAAMpusInfractionAPI/public/api/v1/zones";
+  var usersAPI = "http://dev.uprm.edu/guardia/CAAMpusInfractionAPI/public/api/v1/users";
+  var violationsAPI = "http://dev.uprm.edu/guardia/CAAMpusInfractionAPI/public/api/v1/violations";
   var edmundsAPI = "https://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=kwepp7rqza2hd2xkumq9hsuj";
-  var infractionUploadAPI = "http://162.243.3.45/CAAMpusInfractionAPI/CAAMpusInfractionAPI/public/api/v1/infractions"
+  var infractionUploadAPI = "http://dev.uprm.edu/guardia/CAAMpusInfractionAPI/public/api/v1/infractions"
   //connects to server. downloads all vehicles from database  and is stored locally
   theFactory.DownloadVehicles = function() {
     return $http({
@@ -63,7 +63,7 @@ angular.module('app.services', ['ionic.utils', 'LocalForageModule'])
          var users = theFactory.users;  
          console.log("downloaded users")   
          $localstorage.setObject('users', {users}); 
-                 
+         console.log(status) ;         
    })
 }
 

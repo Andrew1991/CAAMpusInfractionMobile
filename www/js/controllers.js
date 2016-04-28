@@ -13,7 +13,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 			console.log("No loggin information provided");
 		}
 		else{
-			var pin = md5.createHash($scope.userData.pin);
+			var pin = $scope.userData.pin;
 			response = DownloadAll.login($scope.userData.username, pin);
 			//console.log("response: ", response);
 			if(response){
