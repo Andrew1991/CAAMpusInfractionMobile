@@ -179,7 +179,7 @@ theFactory.login = function(username, password){
    response = "";
   console.log(users);
   var user = $filter('filter')(users, {email:username})[0];
-  if(user){
+  if(user.status==1 && user.userRoleID == 3){
     console.log("username found" , user);
     if(user.pin == password){
       console.log("correct password");

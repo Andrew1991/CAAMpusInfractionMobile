@@ -285,7 +285,7 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 		$scope.clampWarning = $rootScope.clampWarn;
 		
 	}
-	if($scope.vehicle.perkingPermitProv == 1){
+	if($scope.vehicle.parkingPermitProv == 1){
 		$scope.prov = "Prov"
 	}
 	else{

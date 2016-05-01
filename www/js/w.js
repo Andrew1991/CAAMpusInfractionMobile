@@ -768,95 +768,36 @@ angular.module('app.controllers', ['ionic.utils','angular-md5', 'ngCordova', 'ui
 						  //   	});
    			    tempInfractions = []; 
    			 	var internet = true;
-   			 	var noInternet = true	   	  			
-					   	for(var i =0; i<$scope.infractions.length; i++) {
-					   			var inf = $scope.infractions[i];
-								if ($scope.infractions[i].vehicleFound == -1) {	
-									DownloadAll.internetCheck()
-						   			.then(function(e) {						   				
-						   				
-						   				return DownloadAll.UploadVehicles(JSON.stringify(inf.vehicle));
-						   			}, function(e){
-						   				console.log("console log 2");
-						   				
-						   				if(i == $scope.infractions.length){
-												//$timeout(hide(), 6000);
-												$localForage.clear(callAtTimeout(false, true))
-												}	
-						   				//tempInfractions.push(inf)
-						   				
-						   			})
-									.then(function() {							
-										return DownloadAll.UploadInfractions(JSON.stringify(inf));
-									}, function(reason){
-										console.log("Could not create vehicle");
-										DownloadAll.UploadInfractions(JSON.stringify(inf));
-																	
-									})
-									.then(function() {
-										console.log("internet false 1" );
-										if(internet){					   					
+   			 	var noInternet = true
+   			 	DownloadAll.internetCheck()
+   			 		.then(function(e){
+   			 			for(var i=0; i<$scope.infractions.length; i++){
+   			 				var inf = $scope.infractions[i]
+   			 				if ($scope.infractions[i].vehicleFound == -1) {	
+   			 					DownloadAll.UploadVehicles(JSON.stringify(inf.vehicle))
+   			 						.then(function(e){
+   			 							return DownloadAll.UploadInfractions(JSON.stringify(inf));
+   			 						}, function(e){
+   			 							return DownloadAll.UploadInfractions(JSON.stringify(inf));
+   			 						})
+   			 				}
+   			 				else{
+   			 					DownloadAll.UploadInfractions(JSON.stringify(inf))
+   			 						.then(function(e){
+   			 							//succes uploaded infraction
+   			 						}, function(e){
+   			 							//error no infraction uploaded
+   			 						})
+   			 				}
+   			 			}
+   			 		$localForage.clear(callAtTimeout(true, false))
 
-						   					internet = false						   					
-						   				}
-									}, function(reason){
-										console.log("console log 5");
-										//tempInfractions.push(inf)								
-									});
-								}
-								else {
-									console.log("inside else: Registered car :", inf)
-						   			DownloadAll.internetCheck()
-						   			.then(function(e) {
-						   				console.log("Internet Available: ",  e);
-						   				return DownloadAll.UploadInfractions(JSON.stringify(inf));
-						   			}, function(e){
-						   				console.log("No Internet Available pushing ", e);
-										tempInfractions.push(inf)
-						   				if(i == $scope.infractions.length){
-												//$timeout(hide(), 6000);
-												$localForage.clear(callAtTimeout(false, true))
-												}					   				
-						   				
-						   				
-						   			})
-									.then(function() {
-										console.log("Created Infraction internet ");
-												console.log(i, $scope.infractions.length )
-											if(i == $scope.infractions.length){
-												//$timeout(hide(), 6000);
-												$localForage.clear(callAtTimeout(true, false))
-												}
-									}, function(reason){
-										if(reason.code == 404){
-											console.log("multa ya existe");
-										}
-										
-										if(reason.code != 404){
-											tempInfractions.push(inf)
-										}
-										if(i == $scope.infractions.length && reason.code != 404){												
-												$localForage.clear(callAtTimeout(false, true))
-												}
-										
-									});
-								}
-
-						
-						// else if(i == $scope.infractions.length && !noInternet){
-						// 	alert("Multas no fueron procesadas. Trate de nuevo mas tarde")
-						// }
-						
-						}
-						
-					 			
-						
-   			 	}
-   			 else{
-   			 	alert("Device not connected to Wifi/Internet")
-   			 }  			
+   			 		}, function(e){
+   			 			//error no internet
+   			 		})	  			
    		 
    		}
+   	}
    		function hide(){
    			$ionicLoading.hide();
    		}
